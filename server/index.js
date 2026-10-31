@@ -52,10 +52,10 @@ async function formFiles(req) {
   return { files, fields: Object.fromEntries([...form.entries()].filter(([, v]) => typeof v === 'string')) };
 }
 
-function serveFile(res, file, type, cache) {
+function serveFile(res, file, type, cache, extra = {}) {
   fs.stat(file, (err, st) => {
     if (err || !st.isFile()) return send(res, 404, 'Not found', { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': type, 'Content-Length': st.size, 'Cache-Control': cache });
+    res.writeHead(200, { ...SECURITY_HEADERS, 'Content-Type': type, 'Content-Length': st.size, 'Cache-Control': cache, ...extra });
     fs.createReadStream(file).pipe(res);
   });
 }
@@ -163,8 +163,7 @@ async function handle(req, res) {
   if (pathname.startsWith('/media/')) {
     const f = storage.resolve(pathname.slice(7));
     if (!f) return send(res, 404, 'Not found');
-    res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox");
-    return serveFile(res, f.file, f.mime, 'public, max-age=31536000, immutable');
+    return serveFile(res, f.file, f.mime, 'public, max-age=31536000, immutable', { 'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; img-src data:; sandbox" });
   }
   if (/^\/episode\/\d+\/?$/.test(pathname)) return serveFile(res, path.join(PUBLIC, 'episode.html'), STATIC_TYPES['.html'], 'no-cache');
   if (PAGES[pathname]) return serveFile(res, path.join(PUBLIC, PAGES[pathname]), STATIC_TYPES['.html'], 'no-cache');

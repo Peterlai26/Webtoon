@@ -8,6 +8,6 @@
     "start": "node server/index.js",
     "render": "node scripts/render-art.js",
     "seed": "node scripts/seed.js --publish",
-    "test": "node --test tests/"
+    "test": "node --test tests/*.test.js"
   }
 }

@@ -13,6 +13,7 @@ const storage = require('../server/storage');
 const repo = require('../server/repo');
 const auth = require('../server/auth');
 const { layoutPanel } = require('./layout');
+const { createMeasurer } = require('./measure');
 
 const args = process.argv.slice(2);
 const publish = args.includes('--publish');
@@ -29,12 +30,17 @@ if (!repo.series()) run('INSERT INTO series (id, title) VALUES (1, ?)', series.t
 const existingSeries = repo.series();
 if (force || !existingSeries.synopsis) repo.updateSeries({ title: series.title, tagline: series.tagline, synopsis: series.synopsis, coverKey: cover?.key });
 
+(async () => {
+const measurer = await createMeasurer();
+if (!measurer) console.log('playwright not available: using estimated text sizes');
 const dirs = fs.readdirSync(OUT).filter((d) => /^ep\d+$/.test(d)).sort();
 for (const d of dirs) {
   const meta = JSON.parse(fs.readFileSync(path.join(OUT, d, 'meta.json'), 'utf8'));
   if (only.length && !only.includes(meta.number)) continue;
   let ep = one('SELECT * FROM episodes WHERE number = ?', meta.number);
   if (ep && !force) { console.log(`EP${meta.number}: exists, skipped (use --force to replace)`); continue; }
+  const layouts = [];
+  for (const p of meta.panels) layouts.push(await layoutPanel(p.text, p.heads, p.h, measurer));
   tx(() => {
     if (!ep) {
       run('INSERT INTO episodes (number, title, subtitle, summary) VALUES (?,?,?,?)', meta.number, meta.title, meta.subtitle || '', meta.summary || '');
@@ -46,7 +52,7 @@ for (const d of dirs) {
     meta.panels.forEach((p, i) => {
       const m = storage.save(fs.readFileSync(path.join(OUT, d, p.file)), `${d}-${p.file}`);
       const r = run('INSERT INTO panels (episode_id, position, image_key, width, height, gap, alt) VALUES (?,?,?,?,?,?,?)', ep.id, i + 1, m.key, m.width, m.height, p.gap ?? 24, p.note || '');
-      const bubbles = layoutPanel(p.text, p.heads, p.h);
+      const bubbles = layouts[i];
       bubbles.forEach((b, k) => run(`INSERT INTO bubbles (panel_id, position, kind, speaker, text, x, y, w, font_scale, tail, tail_x, rotate, color)
         VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`, Number(r.lastInsertRowid), k, b.kind, b.speaker, b.text, b.x, b.y, b.w, b.fontScale, b.tail, b.tailX, b.rotate, b.color));
     });
@@ -56,3 +62,5 @@ for (const d of dirs) {
   });
   console.log(`EP${meta.number}: imported ${meta.panels.length} panels${publish ? ' (published)' : ''}`);
 }
+if (measurer) await measurer.close();
+})().catch((e) => { console.error(e); process.exit(1); });
