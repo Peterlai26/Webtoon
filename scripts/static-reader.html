@@ -143,7 +143,7 @@ function renderHome() {
   const latest = el('a', 'btn', 'ตอนล่าสุด: ตอนที่ ' + last.number); latest.href = '#ep-' + last.number;
   actions.append(first, latest);
   info.append(h1, el('p', 'tagline', series.tagline), el('p', 'synopsis', series.synopsis), actions,
-    el('p', 'note', 'ฉบับอ่านอย่างเดียว · ดัดแปลงจากต้นฉบับนิยาย บทที่ 1–10 · ' + episodes.reduce((a, e) => a + e.panels, 0) + ' ช่อง'));
+    el('p', 'note', 'ฉบับอ่านอย่างเดียว · ดัดแปลงจากต้นฉบับนิยาย บทที่ 1–' + episodes.length + ' · ' + episodes.reduce((a, e) => a + e.panels, 0) + ' ช่อง'));
   hero.append(cover, info);
   const head = el('div', 'list-head'); head.append(el('h2', null, 'ตอนที่มีให้อ่าน'), el('span', 'count', episodes.length + ' ตอน'));
   const list = el('ol', 'eps');
