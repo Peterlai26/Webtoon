@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RESET: 00:10</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<div class="progress" id="progress"></div>
+<nav class="reader-bar" id="bar" aria-label="นำทางตอน">
+  <div class="inner">
+    <a class="icon-btn" href="/" aria-label="หน้าหลัก">☰ หน้าหลัก</a>
+    <a class="icon-btn" id="top-prev" href="#" aria-label="ตอนก่อนหน้า" aria-disabled="true">‹ ก่อน</a>
+    <div class="title" id="bar-title">กำลังโหลด…</div>
+    <a class="icon-btn" id="top-next" href="#" aria-label="ตอนถัดไป" aria-disabled="true">ถัดไป ›</a>
+  </div>
+</nav>
+<main>
+  <header class="ep-header" id="ep-header"><div class="no" id="ep-no"></div><h1 id="ep-title"></h1><div class="sub" id="ep-sub"></div></header>
+  <div class="strip" id="strip" aria-live="polite"></div>
+  <footer class="ep-end" id="ep-end" hidden>
+    <div id="end-msg">จบตอน</div>
+    <div class="nav">
+      <a class="btn" id="end-prev" href="#" aria-disabled="true">‹ ตอนก่อนหน้า</a>
+      <a class="btn" href="/#episodes">รายการตอน</a>
+      <a class="btn primary" id="end-next" href="#" aria-disabled="true">ตอนถัดไป ›</a>
+    </div>
+  </footer>
+</main>
+<script type="module" src="/js/reader.js"></script>
+</body>
+</html>
