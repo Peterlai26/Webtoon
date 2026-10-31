@@ -24,7 +24,8 @@ function torsoShape(D) {
 }
 
 function hole(x, y, r, skin) {
-  return circle(x, y, r + 5, { fill: '#3b2418', opacity: 0.85 }) + circle(x, y, r, { fill: skin }) + circle(x, y, r + 2, { fill: 'none', stroke: '#1a0f0a', strokeWidth: 2 });
+  r *= 0.7;
+  return path(`M${x - r - 5},${y} q2,${-r - 6} ${r + 6},${-r - 4} q${r + 6},0 ${r + 4},${r + 5} q-3,${r + 5} ${-r - 5},${r + 4} q${-r - 4},-2 ${-r - 5},${-r - 5}Z`, { fill: '#3b2418', opacity: 0.8 }) + circle(x, y, r, { fill: skin, opacity: 0.85 }) + circle(x, y, r, { fill: '#7a4a30', opacity: 0.25 });
 }
 
 // ---------- outfits ----------
@@ -589,7 +590,7 @@ function skirt(D, sk) {
 
 function threadRings(D, L) {
   const o = [];
-  for (const x of [-D.sw * 0.32, D.sw * 0.32]) o.push(circle(x, -L + 12, 13, { fill: 'none', stroke: '#ff2a3a', strokeWidth: 2.4, opacity: 0.85, strokeDasharray: '5 4' }));
+  for (const x of [-D.sw * 0.44, D.sw * 0.44]) o.push(path(`M${x - 8},${-L + 4} q8,10 0,22`, { fill: 'none', stroke: '#ff2a3a', strokeWidth: 2.2, opacity: 0.8, strokeDasharray: '4 3' }));
   return o.join('');
 }
 
