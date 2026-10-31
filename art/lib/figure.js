@@ -248,6 +248,7 @@ const CHARS = {
       const s = (st.arms || {})[side] || {};
       const bare = st.outfit === 'tank' || st.outfit === 'vest' || st.outfit === 'surgery';
       const base = bare ? SK.pale : '#1c1b22';
+      if (s.missing) return { hidden: true };
       if (s.burnt) return { ua: '#3a2620', fa: '#2a1a16', cuff: '#c0172a', burnt: true };
       if (s.bandage) return { ua: '#e9e4dc', fa: '#4a3426', cuff: '#4a3426', bandage: true };
       if (s.wound) return { ua: SK.pale, fa: base, cuff: base, wound: true };

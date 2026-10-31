@@ -97,6 +97,11 @@ const PROPS = {
   },
   newspaper() { return rect(-20, -40, 90, 70, { fill: '#e9e4d6', ...S }) + path('M-10,-28 h70 M-10,-16 h50 M-10,-4 h66 M-10,8 h40', { stroke: '#8a8576', strokeWidth: 3 }); },
   bagHand() { return path('M-10,0 C-20,40 -20,70 10,76 C40,80 50,40 30,0Z', { fill: '#e6f2ff', fillOpacity: 0.6, ...S }) + rect(-6, 40, 26, 22, { fill: '#cde9ff', opacity: 0.8 }) + path('M2,30 c-4,10 0,24 8,24 c8,0 12,-12 6,-22Z', { fill: '#c9a28a', stroke: INK, strokeWidth: 2 }); },
+  looseArm(o = {}) { // a detached arm lying on a table (Sera / Grey)
+    const c = o.color || '#f4e2d8';
+    return path('M0,0 L110,6 L200,0', { stroke: INK, strokeWidth: 34, strokeLinecap: 'round', strokeLinejoin: 'round', fill: 'none' }) + path('M0,0 L110,6 L200,0', { stroke: c, strokeWidth: 28, strokeLinecap: 'round', strokeLinejoin: 'round', fill: 'none' }) +
+      circle(214, 0, 16, { fill: c, stroke: INK, strokeWidth: 3 }) + circle(-4, 0, 14, { fill: '#ff3a4a', opacity: 0.6 }) + path('M-4,-8 q-20,-10 -30,4 M-4,6 q-18,10 -28,-2', { stroke: '#ff3a4a', strokeWidth: 2.4, fill: 'none' }) + (o.burnt ? path('M30,-6 L160,-4', { stroke: '#3a2620', strokeWidth: 22, strokeLinecap: 'round' }) : '');
+  },
   candy() { return path('M0,0 L24,-6', { stroke: '#fff', strokeWidth: 3 }) + circle(28, -7, 6, { fill: '#ff6fa8', stroke: INK, strokeWidth: 2 }); },
   coin() { return circle(0, 0, 8, { fill: '#e3b34a', stroke: INK, strokeWidth: 2 }); },
   plasticSheet() { return path('M0,-30 C30,-40 60,-10 80,-26 L70,30 C50,40 20,20 0,30Z', { fill: '#dfeaf0', fillOpacity: 0.85, ...S }); },
