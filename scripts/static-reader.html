@@ -1,0 +1,224 @@
+<title>RESET: 00:10</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&family=Mali:wght@400;600;700&display=swap">
+<style>
+/* Layout: one centred 720px reading column; home = cover + synopsis + episode list, reader = vertical strip. Single dark theme (webtoon reading mode). */
+:root {
+  --bg: #0d0c12; --bg2: #16141e; --card: #1d1a27; --line: #2e2a3b; --text: #ece9f3; --muted: #a29cb4;
+  --accent: #e0263b; --accent2: #7ae6ff;
+  --display: 'Kanit', 'Noto Sans Thai', system-ui, sans-serif;
+  --comic: 'Mali', 'Kanit', 'Noto Sans Thai', sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--display); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+.wrap { max-width: 1000px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(13,12,18,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
+.bar .wrap { display: flex; align-items: center; gap: 8px; min-height: 56px; }
+.logo { font-weight: 800; letter-spacing: .04em; font-size: 19px; text-decoration: none; white-space: nowrap; }
+.logo b { color: var(--accent); }
+.bar .title { flex: 1; min-width: 0; text-align: center; font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); text-decoration: none; font-weight: 600; cursor: pointer; }
+.btn:hover { border-color: var(--muted); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn[aria-disabled="true"] { opacity: .35; pointer-events: none; }
+.icon { min-height: 44px; min-width: 44px; padding: 0 10px; border: 1px solid transparent; border-radius: 10px; background: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+.icon:hover { border-color: var(--line); }
+.icon[aria-disabled="true"] { opacity: .3; pointer-events: none; }
+:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 32px; padding-block: 28px; align-items: center; }
+.cover { aspect-ratio: 8 / 11; max-width: 100%; border-radius: 12px; overflow: hidden; background: var(--bg2); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+.cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+h1 { font-size: clamp(40px, 8vw, 72px); line-height: 1; margin: 0 0 8px; font-weight: 800; letter-spacing: .02em; text-wrap: balance; }
+h1 span { color: var(--accent); }
+.tagline { color: var(--accent2); font-weight: 600; margin: 0 0 14px; }
+.synopsis { color: var(--muted); white-space: pre-line; margin: 0 0 20px; max-width: 62ch; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.note { color: var(--muted); font-size: 13px; margin-top: 14px; }
+.list-head { display: flex; justify-content: space-between; align-items: baseline; margin: 16px 0 10px; }
+.list-head h2 { margin: 0; font-size: 21px; }
+.eps { list-style: none; padding: 0; margin: 0 0 48px; display: grid; gap: 10px; }
+.eps a { display: grid; grid-template-columns: 88px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 10px; border-radius: 12px; background: var(--card); border: 1px solid var(--line); text-decoration: none; }
+.eps a:hover { border-color: var(--muted); }
+.thumb { width: 88px; aspect-ratio: 1; border-radius: 8px; overflow: hidden; background: var(--bg2); }
+.thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.no { font-size: 13px; color: var(--accent2); font-weight: 600; }
+.et { font-weight: 600; line-height: 1.35; }
+.es { color: var(--muted); font-size: 13px; }
+.count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 720px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-block: 18px; }
+  .cover { width: min(300px, 100%); margin: 0 auto; }
+  .eps a { grid-template-columns: 72px minmax(0, 1fr); }
+  .thumb { width: 72px; }
+  .count { grid-column: 2; }
+}
+
+.ep-head { max-width: 720px; margin: 0 auto; padding: 26px 16px; text-align: center; background: linear-gradient(var(--bg2), #000); }
+.ep-head h2 { margin: 4px 0; font-size: clamp(22px, 5vw, 32px); line-height: 1.25; text-wrap: balance; }
+.ep-head .sub { color: var(--muted); font-style: italic; }
+.strip { max-width: 720px; margin: 0 auto; background: #000; }
+.gap { background: #000; }
+.panel { position: relative; margin: 0; container-type: inline-size; background: #111; overflow: hidden; max-width: 100%; }
+.panel > img { display: block; width: 100%; height: auto; user-select: none; -webkit-user-select: none; }
+.ep-end { max-width: 720px; margin: 0 auto; padding: 32px 16px 56px; text-align: center; background: linear-gradient(#000, var(--bg)); }
+.ep-end .actions { justify-content: center; margin-top: 14px; }
+.loading { padding: 60px 16px; text-align: center; color: var(--muted); }
+
+.layer { position: absolute; inset: 0; pointer-events: none; }
+.bubble { position: absolute; font-family: var(--comic); font-size: calc(3.3cqw * var(--fs, 1)); line-height: 1.45; text-align: center; color: #111; padding: .55em .9em; overflow-wrap: anywhere; }
+.bubble span { position: relative; z-index: 1; display: block; white-space: pre-line; }
+.k-say, .k-shout, .k-whisper, .k-think { background: #fff; border: max(2px, .35cqw) solid #111; border-radius: 1.4em; font-weight: 600; }
+.k-shout { font-weight: 700; border-radius: .5em; border-width: max(2.5px, .5cqw); box-shadow: .3em .3em 0 #111; }
+.k-whisper { border-style: dashed; color: #333; font-weight: 400; }
+.k-think { border-radius: 50% / 46%; padding: .9em 1.2em; font-weight: 400; background: #f7f7ff; }
+.k-narr { background: #15121d; color: #f1ecff; border: max(1.5px, .25cqw) solid #6b6290; border-radius: .25em; text-align: left; font-family: var(--display); font-weight: 400; font-size: calc(3cqw * var(--fs, 1)); box-shadow: 0 .2em .6em rgba(0,0,0,.4); }
+.k-sys { background: rgba(4,18,34,.88); color: #bff3ff; border: max(1.5px, .3cqw) solid #59d9ff; border-radius: .3em; font-family: var(--display); font-weight: 600; font-size: calc(2.9cqw * var(--fs, 1)); box-shadow: 0 0 1em rgba(89,217,255,.5), inset 0 0 1em rgba(89,217,255,.2); }
+.k-sfx { padding: 0; font-family: var(--display); font-weight: 800; font-size: calc(6cqw * var(--fs, 1)); line-height: 1.1; color: var(--c, #ffe14a); -webkit-text-stroke: max(1.5px, .45cqw) #111; paint-order: stroke fill; text-shadow: .06em .08em 0 #111; white-space: nowrap; width: auto !important; }
+.bubble[class*="tail-"]::before, .bubble[class*="tail-"]::after { content: ""; position: absolute; width: 0; height: 0; border-style: solid; }
+.tail-b::before { top: 100%; left: var(--tx); transform: translateX(-50%); border-width: 1.05em .55em 0 .55em; border-color: #111 transparent transparent transparent; margin-top: max(1px, .2cqw); }
+.tail-b::after { top: 100%; left: var(--tx); transform: translateX(-50%); border-width: .8em .38em 0 .38em; border-color: #fff transparent transparent transparent; margin-top: -1px; }
+.tail-t::before { bottom: 100%; left: var(--tx); transform: translateX(-50%); border-width: 0 .55em 1.05em .55em; border-color: transparent transparent #111 transparent; margin-bottom: max(1px, .2cqw); }
+.tail-t::after { bottom: 100%; left: var(--tx); transform: translateX(-50%); border-width: 0 .38em .8em .38em; border-color: transparent transparent #fff transparent; margin-bottom: -1px; }
+.tail-l::before { right: 100%; top: var(--tx); transform: translateY(-50%); border-width: .55em 1.05em .55em 0; border-color: transparent #111 transparent transparent; }
+.tail-l::after { right: 100%; top: var(--tx); transform: translateY(-50%); border-width: .38em .8em .38em 0; border-color: transparent #fff transparent transparent; margin-right: -2px; }
+.tail-r::before { left: 100%; top: var(--tx); transform: translateY(-50%); border-width: .55em 0 .55em 1.05em; border-color: transparent transparent transparent #111; }
+.tail-r::after { left: 100%; top: var(--tx); transform: translateY(-50%); border-width: .38em 0 .38em .8em; border-color: transparent transparent transparent #fff; margin-left: -2px; }
+.k-think[class*="tail-"]::before, .k-think[class*="tail-"]::after { border: max(2px, .35cqw) solid #111; background: #f7f7ff; border-radius: 50%; transform: none; }
+.k-think.tail-b::before { top: calc(100% + .2em); left: var(--tx); width: .7em; height: .7em; margin: 0; }
+.k-think.tail-b::after { top: calc(100% + 1.1em); left: calc(var(--tx) + .5em); width: .4em; height: .4em; margin: 0; }
+.k-think.tail-t::before { bottom: calc(100% + .2em); left: var(--tx); width: .7em; height: .7em; margin: 0; }
+.k-think.tail-t::after { bottom: calc(100% + 1.1em); left: calc(var(--tx) + .5em); width: .4em; height: .4em; margin: 0; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+
+<header class="bar"><div class="wrap">
+  <a class="logo" href="#">RESET<b>:</b> 00:10</a>
+  <a class="icon" id="prev" aria-disabled="true">‹ ก่อน</a>
+  <div class="title" id="bar-title"></div>
+  <a class="icon" id="next" aria-disabled="true">ถัดไป ›</a>
+</div></header>
+<main id="app"><div class="loading">กำลังโหลด…</div></main>
+
+<script>
+const app = document.getElementById('app');
+const cache = {};
+const urls = [];
+let index = null;
+
+function svgUrl(svg) { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); urls.push(u); return u; }
+function freeUrls() { while (urls.length) URL.revokeObjectURL(urls.pop()); }
+async function getJson(name) {
+  if (!cache[name]) cache[name] = fetch('data/' + name).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  return cache[name];
+}
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function setNav(prev, next, title) {
+  const p = document.getElementById('prev'), n = document.getElementById('next');
+  for (const [a, num] of [[p, prev], [n, next]]) {
+    if (num) { a.href = '#ep-' + num; a.removeAttribute('aria-disabled'); } else { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); }
+  }
+  p.hidden = n.hidden = !title;
+  document.getElementById('bar-title').textContent = title || '';
+}
+
+function renderHome() {
+  freeUrls();
+  const { series, episodes } = index;
+  document.title = series.title;
+  setNav(null, null, '');
+  const wrap = el('div', 'wrap');
+  const hero = el('section', 'hero');
+  const cover = el('div', 'cover');
+  if (series.cover) { const img = el('img'); img.src = svgUrl(series.cover); img.alt = 'ภาพปก ' + series.title; cover.append(img); }
+  const info = el('div');
+  const h1 = el('h1'); h1.innerHTML = 'RESET<span>: 00:10</span>';
+  const actions = el('div', 'actions');
+  const first = el('a', 'btn primary', 'อ่านตอนแรก'); first.href = '#ep-1';
+  const last = episodes[episodes.length - 1];
+  const latest = el('a', 'btn', 'ตอนล่าสุด: ตอนที่ ' + last.number); latest.href = '#ep-' + last.number;
+  actions.append(first, latest);
+  info.append(h1, el('p', 'tagline', series.tagline), el('p', 'synopsis', series.synopsis), actions,
+    el('p', 'note', 'ฉบับอ่านอย่างเดียว · ดัดแปลงจากต้นฉบับนิยาย บทที่ 1–10 · ' + episodes.reduce((a, e) => a + e.panels, 0) + ' ช่อง'));
+  hero.append(cover, info);
+  const head = el('div', 'list-head'); head.append(el('h2', null, 'ตอนที่มีให้อ่าน'), el('span', 'count', episodes.length + ' ตอน'));
+  const list = el('ol', 'eps');
+  for (const ep of [...episodes].reverse()) {
+    const li = el('li'), a = el('a'); a.href = '#ep-' + ep.number;
+    const th = el('div', 'thumb');
+    if (ep.thumb) { const img = el('img'); img.src = svgUrl(ep.thumb); img.alt = ''; img.loading = 'lazy'; th.append(img); }
+    const txt = el('div'); txt.append(el('div', 'no', 'ตอนที่ ' + ep.number), el('div', 'et', ep.title), el('div', 'es', ep.subtitle));
+    a.append(th, txt, el('span', 'count', ep.panels + ' ช่อง'));
+    li.append(a); list.append(li);
+  }
+  wrap.append(hero, head, list);
+  app.replaceChildren(wrap);
+}
+
+function bubble(b) {
+  const tailKinds = ['say', 'shout', 'whisper', 'think'];
+  const d = el('div', 'bubble k-' + b.kind + (b.tail && b.tail !== 'none' && tailKinds.includes(b.kind) ? ' tail-' + b.tail : ''));
+  d.style.left = b.x + '%'; d.style.top = b.y + '%'; d.style.width = b.w + '%';
+  d.style.setProperty('--fs', b.fontScale || 1); d.style.setProperty('--tx', (b.tailX ?? 50) + '%');
+  if (b.rotate) d.style.transform = 'rotate(' + b.rotate + 'deg)';
+  if (b.color) d.style.setProperty('--c', b.color);
+  d.append(el('span', null, b.text));
+  return d;
+}
+
+async function renderEpisode(n) {
+  app.replaceChildren(el('div', 'loading', 'กำลังโหลดตอนที่ ' + n + '…'));
+  const meta = index.episodes.find((e) => e.number === n);
+  if (!meta) { app.replaceChildren(el('div', 'loading', 'ไม่พบตอนนี้')); setNav(null, null, 'ไม่พบตอน'); return; }
+  const ep = await getJson('ep' + String(n).padStart(2, '0') + '.json');
+  freeUrls();
+  const nums = index.episodes.map((e) => e.number), i = nums.indexOf(n);
+  const prev = nums[i - 1], next = nums[i + 1];
+  document.title = 'ตอนที่ ' + n + ' ' + ep.title + ' · RESET: 00:10';
+  setNav(prev, next, 'ตอนที่ ' + n + ' · ' + ep.title);
+  const head = el('header', 'ep-head');
+  head.append(el('div', 'no', 'ตอนที่ ' + n), el('h2', null, ep.title), el('div', 'sub', ep.subtitle));
+  const strip = el('div', 'strip');
+  ep.panels.forEach((p, k) => {
+    if (k > 0 && p.gap) { const g = el('div', 'gap'); g.style.height = p.gap + 'px'; strip.append(g); }
+    const fig = el('figure', 'panel');
+    if (p.w && p.h) fig.style.aspectRatio = p.w + ' / ' + p.h;
+    const img = el('img'); img.src = svgUrl(p.svg); img.alt = p.alt || ''; img.decoding = 'async'; if (k > 2) img.loading = 'lazy';
+    const layer = el('div', 'layer');
+    p.bubbles.forEach((b) => layer.append(bubble(b)));
+    fig.append(img, layer); strip.append(fig);
+  });
+  const end = el('footer', 'ep-end');
+  end.append(el('div', null, next ? 'จบตอนที่ ' + n : 'จบตอนที่ ' + n + ' — ตอนล่าสุดที่มีให้อ่าน'));
+  const acts = el('div', 'actions');
+  const a1 = el('a', 'btn', '‹ ตอนก่อนหน้า'); if (prev) a1.href = '#ep-' + prev; else a1.setAttribute('aria-disabled', 'true');
+  const a2 = el('a', 'btn', 'รายการตอน'); a2.href = '#';
+  const a3 = el('a', 'btn primary', 'ตอนถัดไป ›'); if (next) a3.href = '#ep-' + next; else a3.setAttribute('aria-disabled', 'true');
+  acts.append(a1, a2, a3); end.append(acts);
+  app.replaceChildren(head, strip, end);
+  window.scrollTo(0, 0);
+  if (next) getJson('ep' + String(next).padStart(2, '0') + '.json').catch(() => {});
+}
+
+async function route() {
+  try {
+    if (!index) index = await getJson('index.json');
+    const m = location.hash.match(/^#ep-(\d+)$/);
+    if (m) await renderEpisode(Number(m[1])); else renderHome();
+  } catch (e) {
+    app.replaceChildren(el('div', 'loading', 'โหลดข้อมูลไม่สำเร็จ ลองรีเฟรชหน้าอีกครั้ง'));
+  }
+}
+addEventListener('hashchange', route);
+addEventListener('keydown', (e) => {
+  if (!/^#ep-/.test(location.hash)) return;
+  const id = e.key === 'ArrowLeft' ? 'prev' : e.key === 'ArrowRight' ? 'next' : null;
+  const a = id && document.getElementById(id);
+  if (a && a.getAttribute('href')) location.hash = a.getAttribute('href');
+});
+route();
+</script>
