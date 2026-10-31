@@ -32,6 +32,20 @@ function hole(x, y, r, skin) {
 const REY_RED = '#b3122a';
 function reyTorso(L, D, st, si, skin) {
   const sw = D.sw, o = [];
+  if (st.outfit === 'shirt') { // EP12: jacket given to Sera, black shirt underneath
+    o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#1d1c24' }) + path(`M-10,${-L + 2} L0,${-L + 16} L10,${-L + 2}`, { stroke: '#3a3842', strokeWidth: 2.4, fill: 'none' }) + path(`M0,${-L + 16} L0,-8`, { stroke: '#2e2c36', strokeWidth: 2 }));
+    return o.join('');
+  }
+  if (st.outfit === 'suit') { // EP13-14: black velvet suit, black silk shirt, dark red tie
+    o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#18171d' }));
+    o.push(path(`M-16,${-L + 2} L0,${-L * 0.42} L16,${-L + 2}Z`, { fill: '#0e0d12' }));
+    o.push(path(`M-3,${-L + 4} L3,${-L + 4} L5,${-L * 0.5} L0,${-L * 0.44} L-5,${-L * 0.5}Z`, { fill: '#8a0e1e', stroke: INK, strokeWidth: 1.4 }));
+    o.push(path(`M-18,${-L + 2} L-4,${-L * 0.42} L-12,${-L * 0.25} M18,${-L + 2} L4,${-L * 0.42} L12,${-L * 0.25}`, { stroke: '#2e2c36', strokeWidth: 3, fill: 'none' }));
+    o.push(circle(-6, -L * 0.3, 2.6, { fill: '#3a3842' }) + circle(-6, -L * 0.18, 2.6, { fill: '#3a3842' }));
+    if (st.blood) o.push(path(`M${si.sx('right') * 24},${-L + 10} q-8,30 6,60 q-14,-6 -18,-30Z`, { fill: '#a3101f', opacity: 0.9 }));
+    if (st.shoulderShot) o.push(circle(si.sx('right') * sw * 0.3, -L + 10, 12, { fill: '#a3101f' }));
+    return o.join('');
+  }
   o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#f4f3ef' }));
   o.push(rect(-sw / 2 - 14, -L, 22, L + 20, { fill: '#1d1c24' }));
   o.push(rect(sw / 2 - 8, -L, 22, L + 20, { fill: '#1d1c24' }));
@@ -47,10 +61,15 @@ function reyTorso(L, D, st, si, skin) {
     o.push(hole(si.sx(h.side) * sw * (h.side === 'c' ? 0 : 0.2) + (h.dx || 0), -L * (1 - (h.y ?? 0.35)), h.r || 11, skin));
   }
   if (st.blood) o.push(path(`M-4,${-L + 12} q-6,30 4,60 q-12,-4 -16,-30Z`, { fill: '#a3101f', opacity: 0.85 }));
+  if (st.scorched) o.push(path(`M-50,${-L * 0.7} q20,-14 34,4 q14,20 -6,30 q-20,6 -28,-34Z M14,${-L * 0.45} q20,-10 30,8 q4,24 -18,22Z M-34,${-L * 0.2} q16,-6 22,6 q-4,12 -18,8Z`, { fill: '#2a1a12', opacity: 0.55 }) + path(`M-40,${-L * 0.86} l10,6 M24,${-L * 0.9} l-6,10 M-20,${-L * 0.1} l12,-4`, { stroke: '#2a1a12', strokeWidth: 3 }));
+  if (st.muddy) o.push(path(`M-60,${-L * 0.3} q30,-12 60,4 q30,10 60,-6 L60,0 L-60,0Z`, { fill: '#5a4a36', opacity: 0.45 }) + circle(-20, -L * 0.6, 8, { fill: '#5a4a36', opacity: 0.4 }) + circle(24, -L * 0.75, 6, { fill: '#5a4a36', opacity: 0.4 }));
+  if (st.torn) o.push(path(`M-34,${-L * 0.5} l12,8 l-8,8 l14,6 M20,${-L * 0.25} l12,10 M30,${-L * 0.8} l-10,12`, { stroke: '#3a2a20', strokeWidth: 3, fill: 'none' }));
   return o.join('');
 }
 function reyOver(L, D, st, si) {
   const o = [];
+  if (st.outfit === 'shirt') return '';
+  if (st.outfit === 'suit') return path(`M-18,${-L + 4} L-14,${-L - 12} L0,${-L - 2} L14,${-L - 12} L18,${-L + 4}`, { fill: '#0e0d12', stroke: INK, strokeWidth: 2.4 });
   o.push(path(`M-18,${-L + 4} L-20,${-L - 14} Q0,${-L - 6} 20,${-L - 14} L18,${-L + 4}Z`, { fill: '#1d1c24', stroke: INK, strokeWidth: 2.5 }));
   o.push(path(`M-19,${-L - 9} Q0,${-L - 2} 19,${-L - 9}`, { stroke: REY_RED, strokeWidth: 2.4, fill: 'none' }));
   if (st.pin) {
@@ -85,6 +104,7 @@ function lucasTorso(L, D, st, si) {
   o.push(circle(0, -L * 0.62, 7, { fill: '#3fe0d0', stroke: '#e2b84a', strokeWidth: 2.5 }));
   o.push(rect(-60, -8, 120, 14, { fill: '#e2b84a' }));
   if (st.dirt) o.push(rect(-60, -L, 120, L, { fill: '#6a5a4a', opacity: 0.12 }));
+  if (st.chestCracked) o.push(circle(0, -L * 0.62, 9, { fill: '#2a2e34' }) + path(`M0,${-L * 0.62} l-24,-20 l-10,6 M0,${-L * 0.62} l26,-14 l8,-16 M0,${-L * 0.62} l-18,24 l-14,4 M0,${-L * 0.62} l20,26 l2,14 M0,${-L * 0.62} l4,-30`, OL(2.4)) + rect(-60, -L, 120, L, { fill: '#2a2a2a', opacity: 0.12 }));
   return o.join('');
 }
 function pauldron(L, D, st, near, si, broken) {
@@ -104,6 +124,16 @@ function pauldron(L, D, st, near, si, broken) {
 function seraTorso(L, D, st, si, skin) {
   const o = [];
   const outfit = st.outfit || 'combat';
+  if (outfit === 'gown') { // EP13-14: black silk evening dress with blood-red lace
+    o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#121117' }) + rect(-60, -L - 20, 120, 26, { fill: skin }));
+    o.push(path(`M-34,${-L + 6} Q0,${-L + 22} 34,${-L + 6}`, { stroke: '#a3101f', strokeWidth: 5, fill: 'none', strokeDasharray: '6 3' }));
+    o.push(path(`M-24,${-L * 0.42} Q0,${-L * 0.36} 24,${-L * 0.42}`, { stroke: '#a3101f', strokeWidth: 3, fill: 'none' }));
+    return o.join('');
+  }
+  if (outfit === 'coat') { // EP12-13: long black coat over the bandages
+    o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#141318' }) + path(`M-14,${-L + 2} L0,${-L * 0.45} L14,${-L + 2}`, { fill: '#232129', stroke: INK, strokeWidth: 2 }) + path(`M-2,${-L * 0.45} L-2,-6`, { stroke: '#2a2830', strokeWidth: 3 }));
+    return o.join('');
+  }
   if (outfit === 'surgery') {
     o.push(rect(-60, -L - 20, 120, L + 40, { fill: skin }));
     o.push(path(`M-34,${-L * 0.72} L34,${-L * 0.72} L30,-4 L-30,-4Z`, { fill: '#1c1b22' }));
@@ -228,8 +258,8 @@ const CHARS = {
     dims: {}, skin: SK.light,
     head: { hair: 'rey', hairColor: '#17161f', eyes: '#d41f2c', skin: SK.light },
     torso: reyTorso, over: reyOver,
-    arm: () => ({ ua: '#f4f3ef', fa: '#f4f3ef', cuff: '#1d1c24', stripe: REY_RED }),
-    leg: () => ({ th: '#3a3c46', sh: '#3a3c46', foot: '#1b1b22', sole: '#e8e8ea' }),
+    arm: (st) => (st.outfit === 'suit' ? { ua: '#18171d', fa: '#18171d', cuff: '#0e0d12' } : st.outfit === 'shirt' ? { ua: '#1d1c24', fa: '#1d1c24', cuff: '#16151b' } : { ua: '#f4f3ef', fa: '#f4f3ef', cuff: '#1d1c24', stripe: REY_RED, scorch: st.scorched }),
+    leg: (st) => (st.outfit === 'suit' ? { th: '#18171d', sh: '#18171d', foot: '#0b0a10', sole: '#2a2830' } : { th: '#3a3c46', sh: '#3a3c46', foot: '#1b1b22', sole: '#e8e8ea' }),
     skirt: (st) => (st.apron ? { color: '#ffd83a', len: 70, front: true } : st.labcoat ? { color: '#fbfbfd', len: 150 } : null),
   },
   lucas: {
@@ -246,6 +276,8 @@ const CHARS = {
     torso: seraTorso,
     arm: (st, side) => {
       const s = (st.arms || {})[side] || {};
+      if (st.outfit === 'gown') return { ua: SK.pale, fa: '#121117', cuff: '#a3101f', hand: '#121117' };
+      if (st.outfit === 'coat') return { ua: '#141318', fa: '#141318', cuff: '#2a2830', hand: SK.pale };
       const bare = st.outfit === 'tank' || st.outfit === 'vest' || st.outfit === 'surgery';
       const base = bare ? SK.pale : '#1c1b22';
       if (s.missing) return { hidden: true };
@@ -255,6 +287,8 @@ const CHARS = {
       return { ua: base, fa: base, cuff: '#2c2a33', hand: bare ? SK.pale : '#24222a' };
     },
     leg: () => ({ th: '#1c1b22', sh: '#1c1b22', foot: '#121117', sole: '#3a3842' }),
+    skirt: (st) => (st.outfit === 'gown' ? { color: '#121117', len: 250, trim: '#a3101f' } : st.outfit === 'coat' ? { color: '#141318', len: 210 } : null),
+    over: (L, D, st) => (st.drape ? path(`M${-D.sw / 2 - 10},${-L + 16} Q0,${-L - 12} ${D.sw / 2 + 10},${-L + 16} L${D.sw / 2 + 16},${-L * 0.3} L${D.sw / 2 - 6},${-L * 0.28} L${D.sw * 0.2},${-L + 30} L${-D.sw * 0.2},${-L + 30} L${-D.sw / 2 + 6},${-L * 0.28} L${-D.sw / 2 - 16},${-L * 0.3}Z`, { fill: '#f4f3ef', stroke: INK, strokeWidth: 2.6, strokeLinejoin: 'round' }) + path(`M${-D.sw / 2 - 4},${-L + 22} L${-D.sw / 2 - 10},${-L * 0.32} M${D.sw / 2 + 4},${-L + 22} L${D.sw / 2 + 10},${-L * 0.32}`, { stroke: REY_RED, strokeWidth: 3 }) : '') + (st.outfit === 'gown' && st.shawl !== false ? path(`M${-D.sw / 2 - 6},${-L + 20} Q0,${-L - 10} ${D.sw / 2 + 6},${-L + 20} L${D.sw / 2 + 2},${-L + 40} Q0,${-L + 16} ${-D.sw / 2 - 2},${-L + 40}Z`, { fill: '#7a0e1e', stroke: INK, strokeWidth: 2.4 }) : ''),
     threads: true,
   },
   lilith: {
@@ -454,6 +488,9 @@ function drawArm(def, D, st, j, which, anatSide, propSpec, detachTo) {
   if (c.burnt) o.push(strokeSeg(pt(sh, angU, 10), pt(elP, angU, -10), wU * 0.4, '#ff6a2a') + strokeSeg(pt(elP, ang, 10), pt(hdP, ang, -20), wF * 0.3, '#c03a1a'));
   if (c.bandage) for (let t = 0.2; t < 1; t += 0.2) { const p = [sh[0] + (elP[0] - sh[0]) * t, sh[1] + (elP[1] - sh[1]) * t]; o.push(strokeSeg(pt(p, angU + 90, -wU / 2), pt(p, angU + 90, wU / 2), 2, '#b8b0a4')); }
   if (c.wound) o.push(strokeSeg(pt(sh, angU, 14), pt(elP, angU, -18), wU * 0.5, '#9a1422') + strokeSeg(pt(sh, angU, 18), pt(elP, angU, -22), 3, '#3fe08a'));
+  if (c.scorch) o.push(strokeSeg(pt(elP, ang, 8), pt(hdP, ang, -22), wF * 0.5, '#3a2618'));
+  if (c.stitch) o.push(path(`M${P(pt(sh, angU + 90, -wU / 2 - 2))} L${P(pt(sh, angU + 90, wU / 2 + 2))}`, { stroke: '#2a1e2e', strokeWidth: 2.4 }) + path([0.25, 0.5, 0.75].map((t) => `M${P(pt(pt(sh, angU + 90, -wU / 2 + wU * t), angU, -4))} l${f(Math.cos((angU * Math.PI) / 180) * 8)},${f(Math.sin((angU * Math.PI) / 180) * 8)}`).join(' '), { stroke: '#2a1e2e', strokeWidth: 1.6 }));
+  if (c.metal) o.push(strokeSeg(pt(elP, ang, 4), pt(hdP, ang, -14), wF * 0.36, '#6a707a') + path(`M${P(pt(elP, ang, 20))} l${f(Math.cos(((ang + 90) * Math.PI) / 180) * 8)},${f(Math.sin(((ang + 90) * Math.PI) / 180) * 8)}`, { stroke: '#3a3e46', strokeWidth: 2 }));
   if (c.stone) for (let t = 0.25; t < 1; t += 0.3) { const p = [sh[0] + (hdP[0] - sh[0]) * t, sh[1] + (hdP[1] - sh[1]) * t]; o.push(path(`M${P(pt(p, ang + 90, -10))} l6,8 l-4,6`, OL(2))); }
   if (c.bandaged) o.push(strokeSeg(pt(hdP, ang, -6), pt(hdP, ang, 4), wF + 2, '#d8cfbf'));
   const handC = c.hand || def.skin;
@@ -490,6 +527,7 @@ function drawLeg(def, D, st, j, which, anatSide) {
 // ---------- main figure ----------
 const META = [];
 function figure(spec) {
+  if (C2[spec.c]) { const r = C2[spec.c](spec); META.push({ c: spec.c, id: spec.id || spec.c, head: r.head.map(Math.round), r: Math.round(r.r) }); return spec.opacity ? g(r.svg, { opacity: spec.opacity }) : r.svg; }
   if (spec.c === 'creature') { META.push({ c: 'creature', id: spec.id || 'creature', head: [spec.x || 0, (spec.y || 0) - 100], r: 50 }); return require('./creature').creature(spec); }
   const def = CHARS[spec.c];
   if (!def) throw new Error('unknown character ' + spec.c);
@@ -514,7 +552,7 @@ function figure(spec) {
   const L = D.torso;
   const torsoT = `translate(${f(j.hip[0])},${f(j.hip[1])}) rotate(${f(rig.T + 90)})`;
   const headT = `translate(${f(j.head[0])},${f(j.head[1])}) rotate(${f(rig.headAng + 90)}) scale(${D.headR / 44})`;
-  const H = head(def.head, spec.expr, si.front ? 'front' : 'side', { ...st, coverFar: near === 'right' });
+  const H = head(st.hair ? { ...def.head, hair: st.hair } : def.head, spec.expr, si.front ? 'front' : 'side', { ...st, coverFar: near === 'right', ...(spec.exprOverride ? { exprOverride: spec.exprOverride } : {}), ...(spec.lipBlood ? { lipBlood: true } : {}) });
 
   const clip = id('tc');
   const parts = [];
@@ -523,6 +561,7 @@ function figure(spec) {
   if (def.cape) parts.push(g(path(`M${-D.sw / 2},${-L + 6} L${D.sw / 2},${-L + 6} L${D.sw / 2 + 50},${60} L${D.sw / 2 + 30},${80} L${D.sw / 2 + 10},${54} L10,${96} L-12,${60} L-30,${100} L${-D.sw / 2 - 40},${70}Z`, { fill: def.cape, stroke: INK, strokeWidth: 3, strokeLinejoin: 'round' }), { transform: torsoT }));
   if (H.behind) parts.push(g(H.behind, { transform: headT }));
   if (def.sack) parts.push(g(ellipse(-D.sw * 0.5, -L * 0.6, 34, 46, { fill: '#8a7a5a', stroke: INK, strokeWidth: 3 }) + path(`M${-D.sw * 0.5 - 10},${-L * 0.6 - 40} l-8,-30 l14,4 M${-D.sw * 0.5 + 10},${-L * 0.6 - 40} l12,-24`, { stroke: INK, strokeWidth: 3, fill: '#b9bcc4' }), { transform: torsoT }));
+  if (st.backSword) parts.push(g(g(prop('sheathed'), { transform: `translate(${f(D.sw * 0.62)},${f(-L - 74)}) rotate(118) scale(1.6)` }), { transform: torsoT }));
   if (def.pauldrons) parts.push(g(pauldronFor(def, L, D, st, false, si), { transform: torsoT }));
   parts.push(drawArm(def, D, st, j, 'F', far, propFor('f'), detTo('f')));
   parts.push(drawLeg(def, D, st, j, 'F', far));
@@ -564,6 +603,7 @@ function figure(spec) {
   const tf = `translate(${f(spec.x || 0)},${f(spec.y || 0)}) rotate(${spec.rot || 0}) scale(${f(s * m * 1000) / 1000},${s}) translate(${f(-anchor[0])},${f(-anchor[1])})`;
   let inner = parts.join('');
   if (spec.sil) inner = `<g style="filter:url(#silF)">${inner}</g>`;
+  if (spec.porcelain) inner = `<g style="filter:url(#porcF)">${inner}</g>`;
   return g(inner, { transform: tf, opacity: spec.opacity, fill: undefined, class: spec.sil ? 'sil' : undefined, style: spec.sil ? `--sil:${spec.sil}` : undefined, filter: spec.blur ? 'url(#blurF)' : undefined });
 }
 
@@ -604,5 +644,8 @@ function razeBlade(D, L, rightNear, st) {
   const x = rightNear ? D.sw * 0.36 : -D.sw * 0.36, dir = rightNear ? 1 : -1;
   return path(`M${x},${-L + 4} C${x + 40 * dir},${-L - 30} ${x + 60 * dir},${-L + 30} ${x + 30 * dir},${-L + 90} C${x + 34 * dir},${-L + 40} ${x + 20 * dir},${-L + 10} ${x},${-L + 20}Z`, { fill: '#24232b', stroke: INK, strokeWidth: 3 }) + path(`M${x + 8 * dir},${-L + 4} C${x + 38 * dir},${-L - 14} ${x + 48 * dir},${-L + 30} ${x + 30 * dir},${-L + 80}`, { stroke: '#8b8e99', strokeWidth: 2, fill: 'none' });
 }
+
+Object.assign(CHARS, require('./cast2')({ SK, OL, coatTorso, plainTorso, armourTorso, leatherCoatTorso }));
+const C2 = require('./creature2');
 
 module.exports = { figure, CHARS, sideInfo, META };

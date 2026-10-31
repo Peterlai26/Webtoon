@@ -14,4 +14,12 @@ const JACKET_EP7 = [H('left', 0.34, 16)];
 // EP10: spear through left chest
 const JACKET_EP10 = [...JACKET_EP7, H('left', 0.4, 14, 10)];
 
-module.exports = { JACKET_EP1, JACKET_EP2, JACKET_EP4, JACKET_EP7, JACKET_EP10 };
+// EP11: same jacket, scorched by the fire-extinguisher blast (ch.11 L52)
+const REY_EP11 = { holes: JACKET_EP10, pin: true, scorched: true, apron: false, headlamp: false, labcoat: false };
+// EP16: Vane's daggers slash the jacket front and left sleeve (ch.16 L36)
+const REY_EP16 = { ...REY_EP11, torn: true };
+// EP18 (end) - EP20: torn and caked with mud, Sera's sword strapped across the back (ch.18 L216, ch.19 L12-18)
+const REY_EP18 = { ...REY_EP16, muddy: true };
+const REY_EP19 = { ...REY_EP18, backSword: true };
+
+module.exports = { JACKET_EP1, JACKET_EP2, JACKET_EP4, JACKET_EP7, JACKET_EP10, REY_EP11, REY_EP16, REY_EP18, REY_EP19 };

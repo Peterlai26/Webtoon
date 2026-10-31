@@ -9,6 +9,7 @@ const W = 800;
 const DEFS = `<defs>
 <filter id="grayF"><feColorMatrix type="saturate" values="0.05"/></filter>
 <filter id="silF"><feFlood flood-color="#15131c" result="c"/><feComposite in="c" in2="SourceAlpha" operator="in"/></filter>
+<filter id="porcF"><feColorMatrix type="matrix" values="0.25 0.35 0.15 0 0.42  0.25 0.35 0.15 0 0.42  0.25 0.35 0.15 0 0.45  0 0 0 1 0"/></filter>
 <filter id="blurF"><feGaussianBlur stdDeviation="4"/></filter>
 </defs>`;
 

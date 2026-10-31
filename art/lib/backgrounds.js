@@ -434,6 +434,8 @@ function turret(x, y) {
   return rect(x - 8, y + 30, 16, 100, { fill: '#9aa3b3', stroke: INK, strokeWidth: 3 }) + circle(x, y + 20, 30, { fill: '#eef1f6', stroke: INK, strokeWidth: 4 }) + rect(x - 60, y + 14, 50, 12, { fill: '#4a4f5a', stroke: INK, strokeWidth: 3 }) + circle(x + 6, y + 14, 6, { fill: '#ff3a3a' });
 }
 
+Object.assign(BG, require('./backgrounds2')({ grad, glow }));
+
 function background(name, W, H, o = {}) {
   const fn = BG[name];
   if (!fn) throw new Error('unknown background ' + name);

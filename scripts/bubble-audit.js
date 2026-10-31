@@ -8,7 +8,7 @@ const B = process.env.BASE || 'http://localhost:3000';
   const b = await chromium.launch();
   const p = await b.newPage({ viewport: { width: Number(process.argv[2] || 720), height: 900 } });
   let issues = 0, total = 0;
-  for (let n = 1; n <= 10; n++) {
+  for (let n = Number(process.env.FROM || 1); n <= Number(process.env.TO || 20); n++) {
     await p.goto(`${B}/episode/${n}`); await p.waitForSelector('.panel img');
     await p.evaluate(() => document.fonts.ready);
     const r = await p.evaluate(() => {

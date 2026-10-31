@@ -109,6 +109,50 @@ const PROPS = {
   meatCleaver() { return path('M0,-4 L30,-4 L30,4 L0,4Z', { fill: '#5a4636', ...S }) + path('M30,-24 L90,-24 L90,10 L30,10Z', { fill: '#a9adb6', ...S }); },
   scale() { return path('M0,0 L0,60 M-40,60 L40,60', { stroke: '#6f6c72', strokeWidth: 5 }) + path('M-40,60 L-56,90 L-24,90Z M40,60 L24,90 L56,90Z', { fill: '#8a8f9e', ...S }); },
   harpoon() { return path('M-30,-8 L80,-8 L80,8 L-30,8Z', { fill: '#3a3a42', ...S }) + path('M80,0 L110,0 L100,-10 M110,0 L100,10', { stroke: '#c9ced6', strokeWidth: 4, fill: 'none' }); },
+  // ---- EP11-20 ----
+  silverPistol() { // Cherry's engraved silver pistol
+    return path('M-6,-10 L50,-10 L56,-4 L56,4 L18,4 L12,24 L0,24 L4,4 L-6,4Z', { fill: '#d9dde6', ...S }) + path('M20,-6 q6,-6 12,0 q-6,6 -12,0Z M36,-6 q5,-5 10,0 q-5,5 -10,0Z', { fill: '#a9b0bd' }) + circle(54, -3, 2, { fill: '#555' });
+  },
+  lollipop() { return path('M0,0 L40,0', { stroke: '#f2f0ea', strokeWidth: 4, strokeLinecap: 'round' }) + circle(56, 0, 18, { fill: '#ff5a8a', stroke: INK, strokeWidth: 2.5 }) + path('M44,-6 q12,-8 22,4 q-8,14 -20,4', { stroke: '#ffd0e0', strokeWidth: 3, fill: 'none' }); },
+  bloodDagger(o = {}) { // Vane: black blade with a red blood groove
+    const lit = o.lit;
+    return rect(-14, -5, 26, 10, { fill: '#1e1d22', ...S }) + rect(10, -11, 6, 22, { fill: '#4a4850', ...S }) +
+      path('M16,-7 L100,-3 L118,0 L100,3 L16,7Z', { fill: '#1a191e', ...S }) +
+      path('M22,0 L100,0', { stroke: lit ? '#ff2a3a' : '#8a1420', strokeWidth: 3.4, strokeLinecap: 'round' }) +
+      (lit ? path('M22,0 L100,0', { stroke: '#ff5a6a', strokeWidth: 10, opacity: 0.35 }) : '');
+  },
+  dullDagger() { return rect(-14, -5, 26, 10, { fill: '#5a5a58', ...S }) + path('M12,-6 L86,-2 L100,0 L86,2 L12,6Z', { fill: '#7a7a76', ...S }); },
+  cigar() { return rect(0, -4, 34, 8, { fill: '#6a3a1e', ...S, rx: 3 }) + rect(26, -4, 4, 8, { fill: '#c9a040' }) + circle(36, 0, 3, { fill: '#ff6a2a' }) + path('M40,-4 q8,-12 0,-24', { stroke: '#d8d4cc', strokeWidth: 3, fill: 'none', opacity: 0.6 }); },
+  wineGlass(o = {}) { return path('M0,0 L0,-6 M-10,6 L10,6', { stroke: INK, strokeWidth: 3 }) + path('M0,-6 L0,-30', { stroke: '#dfe6ee', strokeWidth: 3 }) + path('M-16,-62 L16,-62 C16,-40 8,-30 0,-30 C-8,-30 -16,-40 -16,-62Z', { fill: '#eaf2f8', fillOpacity: 0.4, ...S }) + (o.empty ? '' : path('M-14,-50 L14,-50 C12,-36 6,-32 0,-32 C-6,-32 -12,-36 -14,-50Z', { fill: o.color || '#a3102a' })); },
+  goldCard() { return rect(-6, -22, 64, 40, { fill: '#e8c25a', ...S, rx: 4 }) + path('M8,-2 c8,-14 20,6 30,-6 c6,-8 12,-2 10,6', { stroke: '#8a6420', strokeWidth: 3, fill: 'none' }) + circle(46, -4, 2, { fill: '#8a6420' }); },
+  needle() { return path('M0,0 L70,0', { stroke: '#dfe3ea', strokeWidth: 3, strokeLinecap: 'round' }) + ellipse(6, 0, 4, 2, { fill: 'none', stroke: '#8a8f9e', strokeWidth: 1.4 }) + path('M6,0 q-30,10 -60,-6', { stroke: '#ff2a3a', strokeWidth: 2, fill: 'none' }); },
+  mace(o = {}) { // Grimm's black iron soul-mace with carved sigils
+    const len = o.len || 150;
+    return path(`M-30,0 L${len},0`, { stroke: '#1a191f', strokeWidth: 12, strokeLinecap: 'round' }) + path(`M-30,0 L${len},0`, { stroke: INK, strokeWidth: 2, opacity: 0.6 }) +
+      path(`M${len - 6},-30 L${len + 60},-34 L${len + 70},0 L${len + 60},34 L${len - 6},30Z`, { fill: '#1d1c22', ...S }) +
+      path(`M${len + 6},-18 l10,10 l-10,10 M${len + 28},-20 l0,40 M${len + 44},-14 l8,14 l-8,14`, { stroke: '#7a7a8a', strokeWidth: 2.4, fill: 'none' }) +
+      (o.glow ? path(`M${len - 6},-30 L${len + 60},-34 L${len + 70},0 L${len + 60},34 L${len - 6},30Z`, { fill: 'none', stroke: '#9fd8ff', strokeWidth: 8, opacity: 0.35 }) : '');
+  },
+  voltSword(o = {}) { // Volt: blade wreathed in blue lightning
+    const len = o.len || 220;
+    return path(`M20,0 L${len},0`, { stroke: '#4aa8ff', strokeWidth: 24, opacity: 0.25, strokeLinecap: 'round' }) +
+      rect(-24, -6, 44, 12, { fill: '#22264a', ...S }) + rect(16, -14, 8, 28, { fill: '#d4d8e2', ...S }) +
+      path(`M24,-5 L${len},-2 L${len + 18},0 L${len},2 L24,5Z`, { fill: '#cfe6ff', ...S }) +
+      path(`M30,-14 l20,10 l-10,4 l26,10 M${len * 0.5},-16 l16,12 l-12,2 l20,14 M${len * 0.8},10 l12,-14 l-10,0 l14,-12`, { stroke: '#7ad0ff', strokeWidth: 3, fill: 'none' });
+  },
+  assaultRifle() { // Claire
+    return path('M-50,-6 L-20,-12 L70,-12 L110,-8 L110,4 L30,4 L22,24 L6,24 L10,4 L-50,10Z', { fill: '#3a3e44', ...S }) + rect(20, -20, 40, 8, { fill: '#2a2c30', stroke: INK, strokeWidth: 2 }) + rect(40, 4, 12, 26, { fill: '#2a2c30', stroke: INK, strokeWidth: 2, transform: 'rotate(10 46 4)' });
+  },
+  brazierStaff() { // Cinder Apostle: censer staff with pale white flame
+    return path('M-60,0 L120,0', { stroke: '#3a3028', strokeWidth: 8, strokeLinecap: 'round' }) +
+      path('M120,-18 L150,-22 L156,22 L120,18Z', { fill: '#4a4a52', ...S }) + ellipse(160, 0, 34, 34, { fill: '#f2f6ff', opacity: 0.25 }) +
+      path('M150,-10 C176,-24 170,8 190,0 C170,-4 176,26 150,10Z', { fill: '#f6f8ff', stroke: '#b8c0d8', strokeWidth: 2 });
+  },
+  extinguisher() { return rect(-10, -24, 90, 48, { fill: '#c0172a', ...S, rx: 22 }) + rect(-24, -8, 16, 16, { fill: '#2a2a30', ...S }) + path('M-24,0 q-20,0 -24,20', { stroke: INK, strokeWidth: 5, fill: 'none' }); },
+  syringe() { return rect(0, -6, 60, 12, { fill: '#e9f2f8', ...S }) + rect(8, -4, 30, 8, { fill: '#e8c070' }) + path('M60,0 L90,0', { stroke: '#c9ced9', strokeWidth: 2 }) + rect(-10, -10, 10, 20, { fill: '#9aa0aa', stroke: INK, strokeWidth: 2 }); },
+  contract() { return path('M-10,-34 L60,-38 L66,36 L-4,40Z', { fill: '#e9e2cc', ...S }) + path('M2,-22 h50 M2,-10 h46 M4,2 h44 M4,14 h30', { stroke: '#8a8270', strokeWidth: 3 }) + path('M50,20 q10,10 16,24 L60,40Z', { fill: '#3a1a10', opacity: 0.7 }) + circle(20, 28, 7, { fill: '#a3101f', opacity: 0.7 }); },
+  card() { return rect(-4, -26, 40, 56, { fill: '#fbfbfd', ...S, rx: 3 }) + path('M10,-10 l6,8 l-6,8 l-6,-8Z', { fill: '#c0172a' }); },
+  coatHand() { return path('M0,0 C20,30 10,80 30,110 L80,104 C60,70 70,30 50,0Z', { fill: '#16151b', ...S }); },
   smokeGrenade() { return ellipse(0, 0, 10, 14, { fill: '#5b4a6a', ...S }) + rect(-4, -20, 8, 8, { fill: '#aaa', stroke: INK, strokeWidth: 2 }); },
 };
 

@@ -2,7 +2,7 @@
   "name": "reset-0010-webtoon",
   "version": "1.0.0",
   "private": true,
-  "description": "RESET: 00:10 — Webtoon adaptation (EP1-10) and reader website",
+  "description": "RESET: 00:10 — Webtoon adaptation (EP1-20) and reader website",
   "engines": { "node": ">=22.13" },
   "scripts": {
     "start": "node server/index.js",

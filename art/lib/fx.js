@@ -102,6 +102,8 @@ const FX = {
   prop: (W, H, o) => g(require('./props').prop(o.n, o), { transform: `translate(${o.x},${o.y}) rotate(${o.a || 0}) scale(${o.s || 1})` }),
 };
 
+Object.assign(FX, require('./fx2')({ glow }));
+
 function fx(name, W, H, o = {}) {
   const fn = FX[name];
   if (!fn) throw new Error('unknown fx ' + name);

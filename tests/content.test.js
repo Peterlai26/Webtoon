@@ -1,5 +1,5 @@
 'use strict';
-// Content QA: scope (EP1-10 only), source references, no Thai text inside the
+// Content QA: scope (EP1-20 only), source references, no Thai text inside the
 // artwork, the normalised names/numbers, and continuity rules.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
@@ -9,10 +9,10 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const SB = path.join(ROOT, 'content', 'storyboards');
 const OUT = path.join(ROOT, 'art', 'out');
-const eps = Array.from({ length: 10 }, (_, i) => require(path.join(SB, `ep${String(i + 1).padStart(2, '0')}.js`)));
+const eps = Array.from({ length: 20 }, (_, i) => require(path.join(SB, `ep${String(i + 1).padStart(2, '0')}.js`)));
 const THAI = /[฀-๿]/;
 
-test('exactly episodes 1-10 exist, numbered in order, no EP11+', () => {
+test('exactly episodes 1-20 exist, numbered in order, no EP21+', () => {
   const files = fs.readdirSync(SB).filter((f) => /^ep\d+\.js$/.test(f)).sort();
   assert.deepEqual(files, eps.map((_, i) => `ep${String(i + 1).padStart(2, '0')}.js`));
   eps.forEach((ep, i) => {
@@ -50,10 +50,15 @@ test('normalised source inconsistencies are applied in dialogue', () => {
   assert.ok(!/เวการ์/.test(all), 'name must be วิคาร์ เวล');
   assert.ok(!/Ко|साथ/.test(all), 'stray foreign glyphs from source typos');
   assert.ok(!/ฝูงนักล่าตาบอด/.test(all));
+  // EP11-20 source typos (stray CJK / Cyrillic / Spanish words, doubled vowel)
+  assert.ok(!/[\u4e00-\u9fff\u0400-\u04ff]/.test(all), 'stray CJK/Cyrillic glyphs');
+  assert.ok(!/mientras|\byang\b|ฟัังดู/.test(all), 'stray source typos');
 });
 
 test('characters only appear from the episode they are introduced in the source', () => {
-  const firstEp = { lilith: 3, grey: 3, ash: 4, knell: 5, creature: 5, latch: 6, suture: 6, vale: 6, raze: 10 };
+  const firstEp = { lilith: 3, grey: 3, ash: 4, knell: 5, creature: 5, latch: 6, suture: 6, vale: 6, raze: 10,
+    stranger: 11, bruno: 13, cherry: 13, hostess: 13, velvetGuard: 13, mothkid: 14, roxy: 15, vane: 16, cassian: 16, snake: 16, varan: 17, arachne: 18,
+    nox: 19, gula: 19, volt: 19, claire: 19, grimm: 19, rivetKing: 19, kier: 19, cinder: 19, ninebell: 19 };
   for (const ep of eps) for (const p of ep.panels) for (const l of p.L || []) {
     if (l.c && firstEp[l.c]) assert.ok(ep.number >= firstEp[l.c], `${l.c} appears in EP${ep.number} before introduction`);
   }
@@ -63,7 +68,8 @@ test('episode endings stay on the source ending (last panel cites the final sour
   const lastLine = (ep) => fs.readFileSync(path.join(ROOT, 'source', ep.source), 'utf8').trimEnd().split('\n').length;
   for (const ep of eps) {
     const last = ep.panels[ep.panels.length - 1].src;
+    // sourceEnd: chapter files that end with an author's outline for the next chapter (EP19)
     const nums = last.match(/\d+/g).map(Number);
-    assert.ok(Math.max(...nums) >= lastLine(ep) - 4, `EP${ep.number} ends at ${last}, source has ${lastLine(ep)} lines`);
+    assert.ok(Math.max(...nums) >= (ep.sourceEnd || lastLine(ep)) - 4, `EP${ep.number} ends at ${last}, source has ${lastLine(ep)} lines`);
   }
 });

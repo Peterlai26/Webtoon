@@ -32,7 +32,7 @@ const cover = renderPanel({
 fs.writeFileSync(path.join(OUT, 'cover.svg'), cover.svg);
 
 // ---------- episode thumbnails: a square re-render of a key panel ----------
-const KEY = { 1: 23, 2: 13, 3: 26, 4: 31, 5: 46, 6: 33, 7: 13, 8: 18, 9: 18, 10: 12 };
+const KEY = { 1: 23, 2: 13, 3: 26, 4: 31, 5: 46, 6: 33, 7: 13, 8: 18, 9: 18, 10: 12, 11: 31, 12: 7, 13: 19, 14: 16, 15: 24, 16: 7, 17: 17, 18: 20, 19: 24, 20: 17 };
 for (const [n, idx] of Object.entries(KEY)) {
   const ep = require(`../content/storyboards/ep${String(n).padStart(2, '0')}.js`);
   const p = ep.panels[Math.min(idx, ep.panels.length) - 1];
@@ -112,5 +112,43 @@ sheet('supporting-2', 'ตัวละครสมทบ (2)', [
   { c: 'thug', x: 1140, y: 840, s: 0.82, pose: 'stand', expr: 'smirk', label: 'ไนท์แฟงก์ (EP7)' },
   { c: 'thug', x: 1300, y: 840, s: 0.82, pose: 'stand', expr: 'smirk', st: { fang: '#c9ced6' }, label: 'ไนท์แฟงก์ (EP9–10)' },
   { c: 'creature', x: 1470, y: 760, s: 0.55, pose: 'crouch', label: 'อันเดดตาบอด (EP5)', lx: 1500 },
+], [], 900);
+// ---------- EP11-20 ----------
+sheet('rey-costume-2', 'เรย์ — เสื้อผ้า EP11–20', [
+  { c: 'rey', x: 130, y: 840, s: 0.82, pose: 'stand', expr: 'neutral', st: { ...C.REY_EP11 }, label: 'EP11–12 ไหม้เกรียม' },
+  { c: 'rey', x: 340, y: 840, s: 0.82, pose: 'stand', expr: 'calm', st: { ...C.REY_EP11, outfit: 'shirt' }, label: 'EP12 เชิ้ตดำ (ให้เสื้อเซร่า)' },
+  { c: 'rey', x: 560, y: 840, s: 0.82, pose: 'stand', expr: 'smirk', st: { outfit: 'suit', hair: 'reySlick' }, label: 'EP13–14 สูทกำมะหยี่' },
+  { c: 'rey', x: 780, y: 840, s: 0.82, pose: 'stand', expr: 'neutral', st: { ...C.REY_EP11 }, label: 'EP15 กลับชุดเดิม' },
+  { c: 'rey', x: 1000, y: 840, s: 0.82, pose: 'stand', expr: 'neutral', st: { ...C.REY_EP16 }, label: 'EP16–17 รอยมีดเวนน์' },
+  { c: 'rey', x: 1220, y: 840, s: 0.82, pose: 'stand', expr: 'coldShade', st: { ...C.REY_EP18 }, label: 'EP18 ขาดวิ่น เปื้อนโคลน' },
+  { c: 'rey', x: 1440, y: 840, s: 0.82, pose: 'stand', expr: 'determined', st: { ...C.REY_EP19 }, label: 'EP19–20 ดาบเซร่าบนหลัง' },
+], []);
+sheet('sera-costume-2', 'เซร่า — EP11–18', [
+  { c: 'sera', x: 200, y: 840, s: 0.85, pose: 'stand', expr: 'cold', st: { outfit: 'coat' }, label: 'EP12–13 โค้ทดำยาว' },
+  { c: 'sera', x: 560, y: 840, s: 0.85, pose: 'stand', expr: 'cold', st: { outfit: 'gown', laceMask: true }, label: 'EP13–14 เดรสราตรี+หน้ากากลูกไม้' },
+  { c: 'sera', x: 920, y: 840, s: 0.85, pose: 'stand', expr: 'calm', st: { outfit: 'combat', drape: true }, label: 'EP15 คลุมแจ็กเก็ตเรย์' },
+  { c: 'sera', x: 1280, y: 840, s: 0.85, pose: 'stand', expr: 'focused', st: { outfit: 'combat' }, props: { n: { n: 'sword', a: 100 } }, label: 'EP15–18 ชุดต่อสู้' },
+], []);
+sheet('supporting-3', 'ตัวละครอาร์คย่านเริงรมย์ (EP11–18)', [
+  { c: 'stranger', x: 110, y: 840, s: 0.75, pose: 'point', expr: 'neutral', label: 'บุคคลลึกลับ (EP11)' },
+  { c: 'bruno', x: 310, y: 840, s: 0.62, pose: 'handsHip', expr: 'grin', props: { n: { n: 'cigar', a: -30 } }, label: 'บิ๊ก บรูโน่' },
+  { c: 'cherry', x: 500, y: 840, s: 0.8, pose: 'stand', expr: 'grin', props: { n: 'silverPistol', f: 'silverPistol' }, label: 'เชอร์รี่ แจ็กพอต' },
+  { c: 'mothkid', x: 650, y: 840, s: 0.8, pose: 'stand', expr: 'neutral', props: { n: { n: 'lollipop', a: -70 } }, label: 'เด็กผีเสื้อกลางคืน' },
+  { c: 'roxy', x: 800, y: 840, s: 0.8, pose: 'handsHip', expr: 'grin', label: 'ร็อกซี่' },
+  { c: 'vane', x: 960, y: 840, s: 0.8, pose: 'stand', expr: 'cold', props: { n: { n: 'bloodDagger', lit: true } }, label: 'เวนน์' },
+  { c: 'cassian', x: 1120, y: 840, s: 0.8, pose: 'stand', expr: 'sly', label: 'ลอร์ด แคสเซียน' },
+  { c: 'arachne', x: 1280, y: 840, s: 0.8, pose: 'stand', expr: 'calm', label: 'เลดี้ อารัคเน่' },
+  { c: 'snake', x: 1440, y: 800, s: 0.8, kind: 'red', label: 'งูธาตุ', lx: 1460 },
+], [], 900);
+sheet('supporting-4', 'ตัวละครคฤหาสน์พันปี (EP19–20)', [
+  { c: 'gula', x: 100, y: 840, s: 0.85, pose: 'stand', expr: 'grin', label: 'กูล่า' },
+  { c: 'volt', x: 250, y: 840, s: 0.8, pose: 'stand', expr: 'grin', props: { n: 'voltSword' }, label: 'โวลต์' },
+  { c: 'claire', x: 410, y: 840, s: 0.8, pose: 'stand', expr: 'cold', st: { metalArm: true, metalCheek: true }, props: { n: { n: 'assaultRifle', a: -60 } }, label: 'แคลร์' },
+  { c: 'grimm', x: 570, y: 840, s: 0.8, pose: 'stand', expr: 'neutral', props: { n: { n: 'mace', a: -80 } }, label: 'กริมม์' },
+  { c: 'nox', x: 700, y: 840, s: 0.8, label: 'น็อกซ์' },
+  { c: 'rivetKing', x: 880, y: 840, s: 0.55, pose: 'stand', expr: 'neutral', label: 'ริเว็ต คิง' },
+  { c: 'kier', x: 1060, y: 840, s: 0.8, pose: 'stand', expr: 'cold', props: { n: 'dullDagger', f: 'dullDagger' }, label: 'เคียร์' },
+  { c: 'cinder', x: 1220, y: 840, s: 0.8, pose: 'hunch', expr: 'neutral', props: { n: { n: 'brazierStaff', a: -70 } }, label: 'ซินเดอร์ อะพอสเซิล' },
+  { c: 'ninebell', x: 1420, y: 840, s: 0.7, pose: 'stand', expr: 'neutral', label: 'ไนน์-เบลล์' },
 ], [], 900);
 console.log('cover, thumbnails, character sheets rendered');

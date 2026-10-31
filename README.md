@@ -1,13 +1,17 @@
-# RESET: 00:10 — Webtoon (EP1–10) + Reader Website
+# RESET: 00:10 — Webtoon (EP1–20) + Reader Website
 
-ดัดแปลงนิยาย *RESET: 00:10* บทที่ 1–10 (`source/`) เป็น Webtoon แนวตั้ง 10 ตอน (432 Panels) พร้อมเว็บไซต์อ่านและ Admin Dashboard
+ดัดแปลงนิยาย *RESET: 00:10* บทที่ 1–20 (`source/`) เป็น Webtoon แนวตั้ง 20 ตอน (822 Panels) พร้อมเว็บไซต์อ่านและ Admin Dashboard
+
+- Arc 1 (EP1–12): โซลาริส → เนโครโพลิส ร้านเดดเอนด์
+- Arc 2 (EP13–18): ย่านเริงรมย์ (The Velvet District)
+- Arc 3 (EP19–20): หมู่บ้านผีสิงและคฤหาสน์พันปี
 
 ## Quick start
 ต้องใช้ Node.js ≥ 22.13 (ใช้ `node:sqlite` ในตัว — ไม่มี dependency ภายนอกสำหรับเว็บไซต์)
 
 ```bash
 cp .env.example .env          # ใส่ SESSION_SECRET (>=32 ตัวอักษร) และ ADMIN_PASSWORD
-npm run seed                  # นำเข้า 10 ตอนเข้าฐานข้อมูล + file storage และเผยแพร่
+npm run seed                  # นำเข้า 20 ตอนเข้าฐานข้อมูล + file storage และเผยแพร่
 npm start                     # http://localhost:3000   (admin: /admin)
 ```
 `npm run seed` ใช้ Playwright (ถ้ามี) วัดขนาดข้อความภาษาไทยจริงเพื่อจัดวาง Speech Bubble; ถ้าไม่มีจะใช้ค่าประมาณ
@@ -20,7 +24,7 @@ npm start                     # http://localhost:3000   (admin: /admin)
 | Phase 2 Character reference | `docs/02-character-reference.md`, `docs/characters/*.svg` |
 | Continuity log | `docs/03-continuity.md` |
 | Phase 3 Storyboards | `content/storyboards/epXX.js` → `docs/storyboards/epXX.md` |
-| Phase 4 Art engine / rendered panels | `art/lib/`, `art/out/` |
+| Phase 4 Art engine / rendered panels | `art/lib/` (EP11–20 เพิ่ม `cast2.js`, `creature2.js`, `backgrounds2.js`, `fx2.js`), `art/out/` |
 | Phase 5 Final review | `docs/05-final-review.md` |
 | Server (HTTP, SQLite, storage, auth) | `server/` |
 | Front-end (home, reader, admin) | `public/` |
@@ -31,7 +35,7 @@ npm run render                   # วาด Panel ทั้งหมดให�
 node scripts/render-extras.js    # ภาพปก, ภาพหน้าปกตอน, character sheets
 node scripts/seed.js --publish --force [n]   # นำเข้าใหม่ (เขียนทับตอนที่มีอยู่)
 npm test                         # API + content QA tests
-node scripts/bubble-audit.js 390 # ตรวจข้อความทับ/ล้นในเบราว์เซอร์ (ต้องเปิดเซิร์ฟเวอร์)
+node scripts/bubble-audit.js 390 # ตรวจข้อความทับ/ล้นในเบราว์เซอร์ (ต้องเปิดเซิร์ฟเวอร์; FROM=11 TO=20 เพื่อเลือกช่วงตอน)
 BASE=http://localhost:3000 ADMIN_PASSWORD=... node scripts/e2e-check.js   # E2E เบราว์เซอร์ (แก้ไขข้อมูลทดสอบเล็กน้อย)
 ```
 

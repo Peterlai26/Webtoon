@@ -49,6 +49,18 @@ const POSES = {
   crawl:      { torso: -10, head: -60, nua: 80, nfa: 100, fua: 100, ffa: 90, nth: 70, nsh: 110, fth: 100, fsh: 130 },
   lie:        { torso: -90, head: 0, nua: 100, nfa: 88, fua: 82, ffa: 94, nth: 88, nsh: 90, fth: 94, fsh: 92, rot: -90 },
   lieHurt:    { torso: -90, head: -14, nua: 130, nfa: 60, fua: 60, ffa: 100, nth: 70, nsh: 110, fth: 100, fsh: 80, rot: -90 },
+  // ---- added for EP11-20 ----
+  carry:      { torso: -88, nua: 60, nfa: -6, fua: 44, ffa: -16, nth: 86, nsh: 91, fth: 94, fsh: 90 },
+  throw:      { torso: -80, head: -4, nua: -30, nfa: -20, fua: 150, ffa: 130, nth: 60, nsh: 100, fth: 116, fsh: 96 },
+  reach:      { torso: -80, head: -4, nua: 8, nfa: 4, fua: 110, ffa: 90, nth: 70, nsh: 98, fth: 110, fsh: 94 },
+  swingOver:  { torso: -90, head: -8, nua: -110, nfa: -150, fua: -100, ffa: -140, nth: 80, nsh: 94, fth: 102, fsh: 90 },
+  twoHand:    { torso: -88, nua: 50, nfa: -30, fua: 40, ffa: -34, nth: 74, nsh: 96, fth: 106, fsh: 92 },
+  hunch:      { torso: -62, head: 24, nua: 70, nfa: 40, fua: 90, ffa: 60, nth: 86, nsh: 94, fth: 98, fsh: 90 },
+  ride:       { torso: -56, head: -8, nua: 20, nfa: 10, fua: 30, ffa: 16, nth: 10, nsh: 110, fth: 20, fsh: 116 },
+  leap:       { torso: -60, head: -10, nua: -20, nfa: -40, fua: 170, ffa: 150, nth: 10, nsh: 120, fth: 140, fsh: 150 },
+  sitEdge:    { torso: -92, head: 6, nua: 80, nfa: 60, fua: 100, ffa: 90, nth: 0, nsh: 70, fth: -14, fsh: 104 },
+  slump:      { torso: -100, head: 34, nua: 100, nfa: 92, fua: 80, ffa: 94, nth: 6, nsh: 30, fth: -4, fsh: 20 },
+  lean:       { torso: -96, head: 10, nua: 96, nfa: 70, fua: 108, ffa: 80, nth: 80, nsh: 100, fth: 104, fsh: 84 },
   dangle:     { torso: -92, head: 14, nua: 96, nfa: 92, fua: 88, ffa: 94, nth: 70, nsh: 96, fth: 100, fsh: 104 },
 };
 
