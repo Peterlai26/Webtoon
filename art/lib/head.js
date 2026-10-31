@@ -34,6 +34,7 @@ const EXPR = {
   dazed:      { eye: 'blank', brow: 'worried', mouth: 'o' },
   dead:       { eye: 'blank', brow: 'neutral', mouth: 'o' },
   cry:        { eye: 'squeeze', brow: 'worried', mouth: 'open', tears: true },
+  empty:      { eye: 'blank', brow: 'flat', mouth: 'flat' }, // EP30: Sera rewoven as a doll with no memories
 };
 
 function eye(cx, cy, sx, kind, color, glow) {
@@ -259,6 +260,7 @@ function head(spec, expr, side, extras = {}) {
   if (spec.stitches) out.push(path(spec.stitches, { stroke: '#4a3a2a', strokeWidth: 1.6, fill: 'none' }));
   if (spec.mask === 'skull' || spec.mask === 'skullPlain') {
     out.push(skullMask(fx, spec.mask === 'skullPlain'));
+    if (extras.maskCrack) out.push(path(`M${fx + 30},-44 l-10,18 l6,10 l-12,22 l4,14`, { stroke: INK, strokeWidth: 3, fill: 'none' }) + path(`M${fx + 18},10 q2,10 -2,18`, { stroke: '#c0172a', strokeWidth: 3, fill: 'none' }));
   } else {
     const eyeColor = spec.eyes;
     const glow = spec.eyeGlow;

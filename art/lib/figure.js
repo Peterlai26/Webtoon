@@ -36,6 +36,21 @@ function reyTorso(L, D, st, si, skin) {
     o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#1d1c24' }) + path(`M-10,${-L + 2} L0,${-L + 16} L10,${-L + 2}`, { stroke: '#3a3842', strokeWidth: 2.4, fill: 'none' }) + path(`M0,${-L + 16} L0,-8`, { stroke: '#2e2c36', strokeWidth: 2 }));
     return o.join('');
   }
+  if (st.outfit === 'shirtRolled') { // EP21-22, EP25: black long-sleeve shirt, sleeves rolled to the elbow
+    o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#1d1c24' }) + path(`M-10,${-L + 2} L0,${-L + 16} L10,${-L + 2}`, { stroke: '#3a3842', strokeWidth: 2.4, fill: 'none' }) + path(`M0,${-L + 16} L0,-8`, { stroke: '#2e2c36', strokeWidth: 2 }));
+    if (st.blood) o.push(path(`M-34,${-L + 10} L30,${-L * 0.3}`, { stroke: '#a3101f', strokeWidth: 6, opacity: 0.85 }));
+    return o.join('');
+  }
+  if (st.outfit === 'coat') { // EP26-30: long black coat (ch.26 L62 over the shirt; ch.30 L178 over the white jacket)
+    if (st.inner === 'jacket') o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#f4f3ef' }) + rect(-11, -L * 0.7, 3.5, L * 0.7 + 20, { fill: REY_RED }) + rect(7.5, -L * 0.7, 3.5, L * 0.7 + 20, { fill: REY_RED }) + path(`M-12,${-L + 2} L0,${-L + 18} L12,${-L + 2}`, { fill: '#1d1c24', stroke: INK, strokeWidth: 2 }));
+    else o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#1d1c24' }) + path(`M-10,${-L + 2} L0,${-L + 16} L10,${-L + 2}`, { stroke: '#3a3842', strokeWidth: 2.4, fill: 'none' }));
+    o.push(path(`M-60,${-L - 20} L-14,${-L - 20} L-4,${-L * 0.55} L-10,10 L-60,10Z`, { fill: '#121117' }) + path(`M60,${-L - 20} L14,${-L - 20} L4,${-L * 0.55} L10,10 L60,10Z`, { fill: '#121117' }));
+    o.push(path(`M-14,${-L - 4} L-4,${-L * 0.55} L-10,10 M14,${-L - 4} L4,${-L * 0.55} L10,10`, { stroke: '#2e2c36', strokeWidth: 3, fill: 'none' }));
+    o.push(rect(-60, -12, 120, 6, { fill: '#2a2830' }));
+    if (st.blood) o.push(path(`M-4,${-L + 12} q-6,30 4,60 q-12,-4 -16,-30Z`, { fill: '#a3101f', opacity: 0.85 }));
+    if (st.gash) o.push(path(`M-40,${-L * 0.4} L36,${-L * 0.2}`, { stroke: '#7a0a14', strokeWidth: 10, strokeLinecap: 'round' }) + path(`M-40,${-L * 0.4} L36,${-L * 0.2}`, { stroke: '#c0172a', strokeWidth: 4 }));
+    return o.join('');
+  }
   if (st.outfit === 'suit') { // EP13-14: black velvet suit, black silk shirt, dark red tie
     o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#18171d' }));
     o.push(path(`M-16,${-L + 2} L0,${-L * 0.42} L16,${-L + 2}Z`, { fill: '#0e0d12' }));
@@ -68,7 +83,8 @@ function reyTorso(L, D, st, si, skin) {
 }
 function reyOver(L, D, st, si) {
   const o = [];
-  if (st.outfit === 'shirt') return '';
+  if (st.outfit === 'shirt' || st.outfit === 'shirtRolled') return '';
+  if (st.outfit === 'coat') return path(`M-20,${-L + 4} L-24,${-L - 16} Q0,${-L - 4} 24,${-L - 16} L20,${-L + 4}Z`, { fill: '#121117', stroke: INK, strokeWidth: 2.5 });
   if (st.outfit === 'suit') return path(`M-18,${-L + 4} L-14,${-L - 12} L0,${-L - 2} L14,${-L - 12} L18,${-L + 4}`, { fill: '#0e0d12', stroke: INK, strokeWidth: 2.4 });
   o.push(path(`M-18,${-L + 4} L-20,${-L - 14} Q0,${-L - 6} 20,${-L - 14} L18,${-L + 4}Z`, { fill: '#1d1c24', stroke: INK, strokeWidth: 2.5 }));
   o.push(path(`M-19,${-L - 9} Q0,${-L - 2} 19,${-L - 9}`, { stroke: REY_RED, strokeWidth: 2.4, fill: 'none' }));
@@ -128,6 +144,12 @@ function seraTorso(L, D, st, si, skin) {
     o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#121117' }) + rect(-60, -L - 20, 120, 26, { fill: skin }));
     o.push(path(`M-34,${-L + 6} Q0,${-L + 22} 34,${-L + 6}`, { stroke: '#a3101f', strokeWidth: 5, fill: 'none', strokeDasharray: '6 3' }));
     o.push(path(`M-24,${-L * 0.42} Q0,${-L * 0.36} 24,${-L * 0.42}`, { stroke: '#a3101f', strokeWidth: 3, fill: 'none' }));
+    return o.join('');
+  }
+  if (outfit === 'doll') { // EP30: black combat suit trimmed red, crimson origin threads into the core (ch.30 L138-140)
+    o.push(rect(-60, -L - 20, 120, L + 40, { fill: '#141318' }) + path(`M-30,${-L + 4} L0,${-L * 0.5} L30,${-L + 4}`, { stroke: '#c0172a', strokeWidth: 4, fill: 'none' }) + path(`M-60,${-L * 0.45} L60,${-L * 0.45}`, { stroke: '#c0172a', strokeWidth: 3 }) + rect(-60, -10, 120, 12, { fill: '#c0172a' }));
+    o.push(path(Array.from({ length: 6 }, (_, i) => `M${-4 + i * 2},${-L * 0.62} Q${-40 + i * 16},${-L * 0.4} ${-50 + i * 20},-4`).join(' '), { stroke: '#ff2a3a', strokeWidth: 1.4, fill: 'none', opacity: 0.8 }));
+    o.push(circle(si.sx('left') * 10, -L * 0.62, 9, { fill: '#c0172a', stroke: INK, strokeWidth: 2 }) + circle(si.sx('left') * 10, -L * 0.62, 18, { fill: '#ff2a3a', opacity: 0.3 }));
     return o.join('');
   }
   if (outfit === 'coat') { // EP12-13: long black coat over the bandages
@@ -252,15 +274,26 @@ function purifierHelmet(expr, side) {
     path('M-38,-28 L36,-38 M-20,28 L24,30', { stroke: '#a9b0bd', strokeWidth: 2.4 });
 }
 
+// Rey's arm colours by outfit, plus EP21-30 injury states. armOff: anatomical
+// sides cut away (drawn hidden; the cut itself is shown with fx), burntArms:
+// arms charred (ch.27 L208), rolled sleeves show the forearm.
+function reyArm(st, side, c) {
+  if ((st.armOff || []).includes(side)) return { hidden: true };
+  if (st.outfit === 'shirtRolled') c = { ua: '#1d1c24', fa: SK.light, cuff: '#1d1c24' };
+  if (st.outfit === 'coat') c = { ua: '#121117', fa: '#121117', cuff: st.inner === 'jacket' ? '#f4f3ef' : '#1d1c24' };
+  if (st.burntArms === true || (st.burntArms || []).includes?.(side)) c = { ...c, ua: '#3a2620', fa: '#2a1a16', hand: '#2a1a16', burnt: true };
+  return c;
+}
+
 // ---------- character table ----------
 const CHARS = {
   rey: {
     dims: {}, skin: SK.light,
     head: { hair: 'rey', hairColor: '#17161f', eyes: '#d41f2c', skin: SK.light },
     torso: reyTorso, over: reyOver,
-    arm: (st) => (st.outfit === 'suit' ? { ua: '#18171d', fa: '#18171d', cuff: '#0e0d12' } : st.outfit === 'shirt' ? { ua: '#1d1c24', fa: '#1d1c24', cuff: '#16151b' } : { ua: '#f4f3ef', fa: '#f4f3ef', cuff: '#1d1c24', stripe: REY_RED, scorch: st.scorched }),
+    arm: (st, side) => reyArm(st, side, (st.outfit === 'suit' ? { ua: '#18171d', fa: '#18171d', cuff: '#0e0d12' } : st.outfit === 'shirt' ? { ua: '#1d1c24', fa: '#1d1c24', cuff: '#16151b' } : { ua: '#f4f3ef', fa: '#f4f3ef', cuff: '#1d1c24', stripe: REY_RED, scorch: st.scorched })),
     leg: (st) => (st.outfit === 'suit' ? { th: '#18171d', sh: '#18171d', foot: '#0b0a10', sole: '#2a2830' } : { th: '#3a3c46', sh: '#3a3c46', foot: '#1b1b22', sole: '#e8e8ea' }),
-    skirt: (st) => (st.apron ? { color: '#ffd83a', len: 70, front: true } : st.labcoat ? { color: '#fbfbfd', len: 150 } : null),
+    skirt: (st) => (st.apron ? { color: '#ffd83a', len: 70, front: true } : st.labcoat ? { color: '#fbfbfd', len: 150 } : st.outfit === 'coat' ? { color: '#121117', len: 200, trim: '#2e2c36' } : null),
   },
   lucas: {
     dims: { torso: 172, ua: 104, fa: 98, th: 152, sh: 148, sw: 80 }, skin: SK.fair,
@@ -278,6 +311,7 @@ const CHARS = {
       const s = (st.arms || {})[side] || {};
       if (st.outfit === 'gown') return { ua: SK.pale, fa: '#121117', cuff: '#a3101f', hand: '#121117' };
       if (st.outfit === 'coat') return { ua: '#141318', fa: '#141318', cuff: '#2a2830', hand: SK.pale };
+      if (st.outfit === 'doll') return { ua: '#141318', fa: '#141318', cuff: '#c0172a', hand: SK.pale };
       const bare = st.outfit === 'tank' || st.outfit === 'vest' || st.outfit === 'surgery';
       const base = bare ? SK.pale : '#1c1b22';
       if (s.missing) return { hidden: true };
@@ -286,7 +320,7 @@ const CHARS = {
       if (s.wound) return { ua: SK.pale, fa: base, cuff: base, wound: true };
       return { ua: base, fa: base, cuff: '#2c2a33', hand: bare ? SK.pale : '#24222a' };
     },
-    leg: () => ({ th: '#1c1b22', sh: '#1c1b22', foot: '#121117', sole: '#3a3842' }),
+    leg: (st) => (st.barefoot ? { th: '#141318', sh: '#141318', foot: SK.pale, sole: '#e8cfc4' } : { th: '#1c1b22', sh: '#1c1b22', foot: '#121117', sole: '#3a3842' }),
     skirt: (st) => (st.outfit === 'gown' ? { color: '#121117', len: 250, trim: '#a3101f' } : st.outfit === 'coat' ? { color: '#141318', len: 210 } : null),
     over: (L, D, st) => (st.drape ? path(`M${-D.sw / 2 - 10},${-L + 16} Q0,${-L - 12} ${D.sw / 2 + 10},${-L + 16} L${D.sw / 2 + 16},${-L * 0.3} L${D.sw / 2 - 6},${-L * 0.28} L${D.sw * 0.2},${-L + 30} L${-D.sw * 0.2},${-L + 30} L${-D.sw / 2 + 6},${-L * 0.28} L${-D.sw / 2 - 16},${-L * 0.3}Z`, { fill: '#f4f3ef', stroke: INK, strokeWidth: 2.6, strokeLinejoin: 'round' }) + path(`M${-D.sw / 2 - 4},${-L + 22} L${-D.sw / 2 - 10},${-L * 0.32} M${D.sw / 2 + 4},${-L + 22} L${D.sw / 2 + 10},${-L * 0.32}`, { stroke: REY_RED, strokeWidth: 3 }) : '') + (st.outfit === 'gown' && st.shawl !== false ? path(`M${-D.sw / 2 - 6},${-L + 20} Q0,${-L - 10} ${D.sw / 2 + 6},${-L + 20} L${D.sw / 2 + 2},${-L + 40} Q0,${-L + 16} ${-D.sw / 2 - 2},${-L + 40}Z`, { fill: '#7a0e1e', stroke: INK, strokeWidth: 2.4 }) : ''),
     threads: true,
@@ -527,7 +561,7 @@ function drawLeg(def, D, st, j, which, anatSide) {
 // ---------- main figure ----------
 const META = [];
 function figure(spec) {
-  if (C2[spec.c]) { const r = C2[spec.c](spec); META.push({ c: spec.c, id: spec.id || spec.c, head: r.head.map(Math.round), r: Math.round(r.r) }); return spec.opacity ? g(r.svg, { opacity: spec.opacity }) : r.svg; }
+  if (C2[spec.c]) { const r = C2[spec.c](spec); META.push({ c: spec.c, id: spec.id || spec.c, head: r.head.map(Math.round), r: Math.round(r.r) }); return clipWrap(spec.opacity ? g(r.svg, { opacity: spec.opacity }) : r.svg, spec.clip); }
   if (spec.c === 'creature') { META.push({ c: 'creature', id: spec.id || 'creature', head: [spec.x || 0, (spec.y || 0) - 100], r: 50 }); return require('./creature').creature(spec); }
   const def = CHARS[spec.c];
   if (!def) throw new Error('unknown character ' + spec.c);
@@ -561,6 +595,7 @@ function figure(spec) {
   if (def.cape) parts.push(g(path(`M${-D.sw / 2},${-L + 6} L${D.sw / 2},${-L + 6} L${D.sw / 2 + 50},${60} L${D.sw / 2 + 30},${80} L${D.sw / 2 + 10},${54} L10,${96} L-12,${60} L-30,${100} L${-D.sw / 2 - 40},${70}Z`, { fill: def.cape, stroke: INK, strokeWidth: 3, strokeLinejoin: 'round' }), { transform: torsoT }));
   if (H.behind) parts.push(g(H.behind, { transform: headT }));
   if (def.sack) parts.push(g(ellipse(-D.sw * 0.5, -L * 0.6, 34, 46, { fill: '#8a7a5a', stroke: INK, strokeWidth: 3 }) + path(`M${-D.sw * 0.5 - 10},${-L * 0.6 - 40} l-8,-30 l14,4 M${-D.sw * 0.5 + 10},${-L * 0.6 - 40} l12,-24`, { stroke: INK, strokeWidth: 3, fill: '#b9bcc4' }), { transform: torsoT }));
+  if (def.under) parts.push(g(def.under(L, D, st, si), { transform: torsoT }));
   if (st.backSword) parts.push(g(g(prop('sheathed'), { transform: `translate(${f(D.sw * 0.62)},${f(-L - 74)}) rotate(118) scale(1.6)` }), { transform: torsoT }));
   if (def.pauldrons) parts.push(g(pauldronFor(def, L, D, st, false, si), { transform: torsoT }));
   parts.push(drawArm(def, D, st, j, 'F', far, propFor('f'), detTo('f')));
@@ -604,7 +639,16 @@ function figure(spec) {
   let inner = parts.join('');
   if (spec.sil) inner = `<g style="filter:url(#silF)">${inner}</g>`;
   if (spec.porcelain) inner = `<g style="filter:url(#porcF)">${inner}</g>`;
-  return g(inner, { transform: tf, opacity: spec.opacity, fill: undefined, class: spec.sil ? 'sil' : undefined, style: spec.sil ? `--sil:${spec.sil}` : undefined, filter: spec.blur ? 'url(#blurF)' : undefined });
+  const out = g(inner, { transform: tf, opacity: spec.opacity, fill: undefined, class: spec.sil ? 'sil' : undefined, style: spec.sil ? `--sil:${spec.sil}` : undefined, filter: spec.blur ? 'url(#blurF)' : undefined });
+  return clipWrap(out, spec.clip);
+}
+
+// spec.clip = [x, y, w, h] in panel coordinates: show only that part of the
+// figure (half-bodies, figures emerging from smoke / behind rubble).
+function clipWrap(svg, c) {
+  if (!c) return svg;
+  const cid = id('fc');
+  return `<defs><clipPath id="${cid}"><rect x="${c[0]}" y="${c[1]}" width="${c[2]}" height="${c[3]}"/></clipPath></defs>` + g(svg, { clipPath: `url(#${cid})` });
 }
 
 function pauldronFor(def, L, D, st, nearOne, si) {
@@ -646,6 +690,7 @@ function razeBlade(D, L, rightNear, st) {
 }
 
 Object.assign(CHARS, require('./cast2')({ SK, OL, coatTorso, plainTorso, armourTorso, leatherCoatTorso }));
-const C2 = require('./creature2');
+Object.assign(CHARS, require('./cast3')({ SK, OL, purifierHelmet }));
+const C2 = { ...require('./creature2'), ...require('./creature3') };
 
 module.exports = { figure, CHARS, sideInfo, META };

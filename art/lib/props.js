@@ -10,7 +10,10 @@ const PROPS = {
     return path(`M-26,-5 L14,-5 L14,5 L-26,5Z`, { fill: '#2b2730', ...S }) +
       path(`M14,-15 L22,-15 L22,15 L14,15Z`, { fill: '#55505c', ...S }) +
       path(`M22,-6 L${len},-3 L${len + 22},0 L${len},3 L22,6Z`, { fill: o.color || '#3a3a46', ...S }) +
-      path(`M28,-1 L${len},-1`, { stroke: '#b9bccb', strokeWidth: 2, opacity: 0.8 });
+      path(`M28,-1 L${len},-1`, { stroke: '#b9bccb', strokeWidth: 2, opacity: 0.8 }) +
+      (o.cracks ? path(`M${len * 0.4},-5 l4,4 l-3,3 M${len * 0.62},5 l3,-4 l4,2 M${len * 0.8},-4 l3,5`, { stroke: '#e9ecf4', strokeWidth: 1.4, fill: 'none' }) : '') +
+      // EP25+: reforged with black ore and ash-flame — ember-red lines along the edge and the fuller (ch.25 L140)
+      (o.ember ? path(`M30,0 L${len},0`, { stroke: '#ff3a1a', strokeWidth: 2.4, opacity: 0.95 }) + path(`M24,-5 L${len},-3 L${len + 22},0`, { stroke: '#c0172a', strokeWidth: 1.6, fill: 'none' }) + (o.flame ? path(`M30,-8 C${len * 0.3},-30 ${len * 0.6},-10 ${len * 0.8},-34 C${len * 0.9},-10 ${len},-24 ${len + 30},0 C${len},12 ${len * 0.5},20 30,8Z`, { fill: '#ff4a1a', opacity: 0.45 }) : '') : '');
   },
   sheathed() { return path('M-10,-6 L160,-4 L170,0 L160,4 L-10,6Z', { fill: '#1f1d25', ...S }) + rect(-34, -5, 24, 10, { fill: '#2b2730', ...S }); },
   spear(o = {}) { // Lucas: gold geometric spear with gold/teal rings
@@ -154,7 +157,66 @@ const PROPS = {
   card() { return rect(-4, -26, 40, 56, { fill: '#fbfbfd', ...S, rx: 3 }) + path('M10,-10 l6,8 l-6,8 l-6,-8Z', { fill: '#c0172a' }); },
   coatHand() { return path('M0,0 C20,30 10,80 30,110 L80,104 C60,70 70,30 50,0Z', { fill: '#16151b', ...S }); },
   smokeGrenade() { return ellipse(0, 0, 10, 14, { fill: '#5b4a6a', ...S }) + rect(-4, -20, 8, 8, { fill: '#aaa', stroke: INK, strokeWidth: 2 }); },
+
+  // ---------- EP21-30 ----------
+  plasmaBlade(o = {}) { // Captain Ilya's twin energy blades; o.hot = reactor overdrive, o.broken
+    const len = o.len || (o.broken ? 90 : 200), c = o.hot ? '#ffffff' : '#bfe8ff';
+    return path(`M20,0 L${len},0`, { stroke: o.hot ? '#fff3b0' : '#7ad8ff', strokeWidth: o.hot ? 36 : 26, opacity: 0.3, strokeLinecap: 'round' }) +
+      path(`M20,0 L${len},0`, { stroke: c, strokeWidth: 10, strokeLinecap: o.broken ? 'butt' : 'round' }) + path(`M20,0 L${len},0`, { stroke: '#fff', strokeWidth: 3 }) +
+      rect(-22, -7, 42, 14, { fill: '#f2f4f8', ...S }) + rect(14, -12, 8, 24, { fill: '#1f2a4a', ...S }) + rect(-14, -3, 20, 6, { fill: '#e2b84a' });
+  },
+  lightSaw() { // Counter-Zero right arm: high-frequency light saw
+    return rect(-10, -16, 50, 32, { fill: '#d6dbe4', ...S }) + circle(90, 0, 52, { fill: '#ffdc7a', opacity: 0.3 }) + circle(90, 0, 44, { fill: '#fff3c4', stroke: '#ffb800', strokeWidth: 4 }) +
+      path(Array.from({ length: 12 }, (_, i) => { const a = (i / 12) * Math.PI * 2; return `M${90 + Math.cos(a) * 44},${Math.sin(a) * 44} l${Math.cos(a + 0.5) * 12},${Math.sin(a + 0.5) * 12}`; }).join(' '), { stroke: '#ffb800', strokeWidth: 4 }) + circle(90, 0, 10, { fill: '#9aa3b3', ...S });
+  },
+  netGun() { return rect(-10, -16, 80, 32, { fill: '#d6dbe4', ...S, rx: 8 }) + rect(66, -22, 26, 44, { fill: '#5a6070', ...S }) + path('M92,-16 l10,-8 M92,0 l12,0 M92,16 l10,8', { stroke: '#7ad8ff', strokeWidth: 3 }); },
+  energyAxe() { // modified revenant #1: giant light-energy axe
+    return path('M-40,0 L150,0', { stroke: '#3a3a42', strokeWidth: 14, strokeLinecap: 'round' }) + path('M120,-10 C150,-90 230,-90 250,-40 C220,-40 190,-20 170,6Z', { fill: '#fff3c4', opacity: 0.4 }) + path('M126,-6 C150,-70 210,-76 230,-40 C206,-36 184,-20 166,4Z', { fill: '#ffe07a', stroke: '#ffb800', strokeWidth: 4 });
+  },
+  chainsaw() { // modified revenant #4: twin chainsaw swords
+    return rect(-24, -9, 44, 18, { fill: '#2a2830', ...S }) + rect(20, -16, 180, 32, { fill: '#9aa3b3', ...S, rx: 14 }) + path(Array.from({ length: 14 }, (_, i) => `M${26 + i * 12},-16 l6,-8 l6,8 M${26 + i * 12},16 l6,8 l6,-8`).join(' '), { fill: '#d6dbe4', stroke: INK, strokeWidth: 1.4 });
+  },
+  thunderHammer() { // modified revenant #2: purging lightning hammer
+    return path('M-40,0 L130,0', { stroke: '#3a3a42', strokeWidth: 14, strokeLinecap: 'round' }) + rect(120, -46, 70, 92, { fill: '#f4f3ee', ...S, rx: 8 }) + rect(126, -10, 58, 20, { fill: '#e2b84a' }) + path('M200,-40 l20,16 l-12,6 l22,18 M200,30 l24,-8', { stroke: '#7ad0ff', strokeWidth: 4, fill: 'none' });
+  },
+  chainSpear(o = {}) { // modified revenant #3: high-heat chain spear
+    const len = o.len || 260;
+    return path(`M-40,0 L${len},0`, { stroke: '#5a5e66', strokeWidth: 10 }) + path(`M${len},-14 L${len + 60},0 L${len},14Z`, { fill: '#ff8a3a', stroke: INK, strokeWidth: 3 }) + path(`M-40,0 L${len},0`, { stroke: '#ff6a1a', strokeWidth: 3, strokeDasharray: '10 8' }) + path(`M-40,0 q-60,40 -120,10 q-40,-20 -80,20`, { stroke: '#8a8f98', strokeWidth: 6, fill: 'none', strokeDasharray: '10 6' });
+  },
+  nitroCannon() { return rect(-30, -18, 140, 36, { fill: '#d6dbe4', ...S, rx: 10 }) + rect(100, -24, 30, 48, { fill: '#5a8ab0', ...S }) + rect(-10, 18, 40, 30, { fill: '#9ad8ff', ...S, rx: 6 }) + path('M130,-14 l20,-6 M130,0 l24,0 M130,14 l20,6', { stroke: '#d8f4ff', strokeWidth: 3 }); },
+  harpoonGun() { return rect(-30, -12, 130, 24, { fill: '#5a6070', ...S }) + path('M100,0 L170,0 M160,-10 L180,0 L160,10', { stroke: '#ff8a3a', strokeWidth: 6, fill: 'none' }); },
+  soulCannon() { return rect(-30, -22, 150, 44, { fill: '#eef1f6', ...S, rx: 12 }) + circle(120, 0, 26, { fill: '#c9a0ff', stroke: INK, strokeWidth: 3 }) + circle(120, 0, 12, { fill: '#f0e0ff' }) + rect(0, -30, 60, 10, { fill: '#e3a82b' }); },
+  flamethrower() { return rect(-30, -12, 130, 24, { fill: '#eef1f6', ...S }) + rect(-20, 12, 50, 30, { fill: '#e2b84a', ...S, rx: 8 }) + path('M100,-8 L130,-12 L130,12 L100,8Z', { fill: '#5a6070', ...S }); },
+  sniper(o = {}) { // Claire's heavy-barrel sniper rifle reinforced with black ore (ch.26 L64)
+    return path('M-60,-6 L-24,-12 L150,-10 L190,-6 L190,4 L40,6 L30,26 L14,26 L18,6 L-60,12Z', { fill: '#24232a', ...S }) + rect(20, -26, 70, 12, { fill: '#121117', stroke: INK, strokeWidth: 2, rx: 5 }) + circle(90, -20, 7, { fill: '#5ad8ff' }) + path('M160,-6 L190,-4', { stroke: '#ff3a1a', strokeWidth: 2 }) + (o.jam ? path('M-20,-10 q20,-20 40,0', { stroke: '#ff8a2a', strokeWidth: 6, fill: 'none' }) : '');
+  },
+  heavyPistol() { // Claire's black-ore heavy pistols
+    return path('M-6,-12 L62,-12 L68,-5 L68,5 L20,5 L14,26 L0,26 L4,5 L-6,5Z', { fill: '#2a2830', ...S }) + rect(30, -9, 26, 4, { fill: '#ff3a1a' });
+  },
+  forgeHammer() { // Rivet King's giant forging hammer
+    return path('M-40,0 L150,0', { stroke: '#3a2a20', strokeWidth: 16, strokeLinecap: 'round' }) + rect(140, -60, 90, 120, { fill: '#5e636c', ...S, rx: 10 }) + path('M150,-50 v100 M220,-50 v100', { stroke: '#a9afb9', strokeWidth: 4 });
+  },
+  puppetCane() { // Marquis Velvet's puppeteer cane
+    return path('M-60,0 L140,0', { stroke: '#24102e', strokeWidth: 8, strokeLinecap: 'round' }) + circle(150, 0, 14, { fill: '#c9a040', ...S }) + path('M150,0 q-10,60 -40,90 M150,0 q20,60 10,100 M150,0 q40,40 60,60', { stroke: '#e8e2f0', strokeWidth: 1.4, fill: 'none', opacity: 0.8 });
+  },
+  miniCrossbow() { // Valentine's small crossbow with perfume-poison vials
+    return rect(-10, -6, 80, 12, { fill: '#5a3a4a', ...S }) + path('M60,-40 Q80,0 60,40', { stroke: '#2a1e26', strokeWidth: 6, fill: 'none' }) + path('M60,-40 L20,0 L60,40', { stroke: '#e8d0d8', strokeWidth: 1.6, fill: 'none' }) + rect(10, -20, 14, 14, { fill: '#ff8ab8', ...S, rx: 4 }) + rect(30, -20, 14, 14, { fill: '#c0485a', ...S, rx: 4 });
+  },
+  boneWhip(o = {}) { // Corsetta's nine-metre bone-and-iron whip
+    const len = o.len || 520;
+    return rect(-20, -6, 40, 12, { fill: '#3a0a10', ...S }) + path(`M20,0 C${len * 0.3},-80 ${len * 0.5},80 ${len * 0.75},-20 C${len * 0.85},-60 ${len * 0.95},20 ${len},-10`, { stroke: INK, strokeWidth: 10, fill: 'none', strokeLinecap: 'round' }) + path(`M20,0 C${len * 0.3},-80 ${len * 0.5},80 ${len * 0.75},-20 C${len * 0.85},-60 ${len * 0.95},20 ${len},-10`, { stroke: '#e8e0cc', strokeWidth: 6, fill: 'none', strokeDasharray: '12 6', strokeLinecap: 'round' });
+  },
+  redBlade(o = {}) { // Sera's new twin blades woven from Arachne's origin thread alloy (ch.30 L160)
+    const len = o.len || 170;
+    return path(`M-20,-5 L14,-5 L14,5 L-20,5Z`, { fill: '#3a0a10', ...S }) + path(`M14,-6 L${len},-2 L${len + 18},0 L${len},2 L14,6Z`, { fill: '#8a0e1e', ...S }) + path(`M20,0 L${len},0`, { stroke: '#ff5a6a', strokeWidth: 1.6 }) + path(`M-20,0 q-30,-10 -50,10 M-20,2 q-30,10 -40,30`, { stroke: '#ff2a3a', strokeWidth: 1.4, fill: 'none' });
+  },
+  energyCore() { return circle(40, 0, 34, { fill: '#c58aff', opacity: 0.35 }) + poly8(40, 0, 24, '#b88aff', '#ffd45a'); },
+  oreSlab() { return path('M0,-30 L80,-40 L96,20 L10,34Z', { fill: '#16151b', ...S }) + path('M14,-20 L70,-28 M20,10 L80,4', { stroke: '#ff8a3a', strokeWidth: 2, opacity: 0.7 }); },
 };
+function poly8(cx, cy, r, fill, stroke) {
+  const pts = Array.from({ length: 8 }, (_, i) => { const a = (i / 8) * Math.PI * 2; return `${(cx + Math.cos(a) * r).toFixed(1)},${(cy + Math.sin(a) * r).toFixed(1)}`; }).join(' ');
+  return `<polygon points="${pts}" fill="${fill}" stroke="${stroke}" stroke-width="3"/>`;
+}
 
 function prop(name, o) {
   const fn = PROPS[name];

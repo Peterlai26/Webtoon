@@ -3,7 +3,9 @@
 const C = (c) => (x, y, s, pose, expr, o = {}) => ({ c, x, y, s, pose, expr, ...o });
 const names = ['rey', 'lucas', 'sera', 'lilith', 'knell', 'latch', 'suture', 'ash', 'grey', 'vale', 'purifier', 'purifierElite', 'examiner', 'aegis', 'tech', 'candidate', 'oldman', 'boy', 'thug', 'thugBoss', 'raze', 'revenant', 'merchant', 'oldmerchant', 'guard', 'patient', 'creature',
   // EP11-20
-  'bruno', 'cherry', 'mothkid', 'roxy', 'vane', 'cassian', 'arachne', 'gula', 'volt', 'claire', 'grimm', 'rivetKing', 'kier', 'cinder', 'ninebell', 'stranger', 'hostess', 'velvetGuard', 'gambler', 'doll', 'nox', 'snake', 'varan'];
+  'bruno', 'cherry', 'mothkid', 'roxy', 'vane', 'cassian', 'arachne', 'gula', 'volt', 'claire', 'grimm', 'rivetKing', 'kier', 'cinder', 'ninebell', 'stranger', 'hostess', 'velvetGuard', 'gambler', 'doll', 'nox', 'snake', 'varan',
+  // EP21-30
+  'ilya', 'enforcer', 'mech', 'revS', 'marquis', 'valentine', 'corsetta', 'porcelain', 'silk', 'claireBones', 'rockKing', 'oreBeetle', 'centipede', 'puppet'];
 const H = {};
 for (const n of names) H[n] = C(n);
 H.fx = (name, o = {}) => ({ fx: name, ...o });

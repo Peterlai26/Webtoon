@@ -22,4 +22,14 @@ const REY_EP16 = { ...REY_EP11, torn: true };
 const REY_EP18 = { ...REY_EP16, muddy: true };
 const REY_EP19 = { ...REY_EP18, backSword: true };
 
-module.exports = { JACKET_EP1, JACKET_EP2, JACKET_EP4, JACKET_EP7, JACKET_EP10, REY_EP11, REY_EP16, REY_EP18, REY_EP19 };
+// EP21: the EP19 jacket, shredded and blood-soaked by the end of the trial (ch.21 L132)
+// EP22: training in the black long-sleeved shirt, sleeves rolled to the elbow (ch.22 L10)
+// EP23: the white jacket washed of last night's blood, worn over the black shirt (ch.23 L12)
+const REY_EP23 = { ...REY_EP16 };
+// EP24: back of the jacket clawed open (ch.24 L78), chest scorched by magma (ch.24 L274)
+const REY_EP24 = { ...REY_EP23, torn: true, scorched: true, blood: true };
+// EP26-29: a long black coat over the shirt (ch.26 L62); EP30 epilogue: over the white jacket (ch.30 L178)
+const REY_EP26 = { outfit: 'coat', inner: 'shirt' };
+const REY_EP30 = { outfit: 'coat', inner: 'jacket' };
+
+module.exports = { REY_EP23, REY_EP24, REY_EP26, REY_EP30, JACKET_EP1, JACKET_EP2, JACKET_EP4, JACKET_EP7, JACKET_EP10, REY_EP11, REY_EP16, REY_EP18, REY_EP19 };

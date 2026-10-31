@@ -32,7 +32,8 @@ const cover = renderPanel({
 fs.writeFileSync(path.join(OUT, 'cover.svg'), cover.svg);
 
 // ---------- episode thumbnails: a square re-render of a key panel ----------
-const KEY = { 1: 23, 2: 13, 3: 26, 4: 31, 5: 46, 6: 33, 7: 13, 8: 18, 9: 18, 10: 12, 11: 31, 12: 7, 13: 19, 14: 16, 15: 24, 16: 7, 17: 17, 18: 20, 19: 24, 20: 17 };
+const KEY = { 1: 23, 2: 13, 3: 26, 4: 31, 5: 46, 6: 33, 7: 13, 8: 18, 9: 18, 10: 12, 11: 31, 12: 7, 13: 19, 14: 16, 15: 24, 16: 7, 17: 17, 18: 20, 19: 24, 20: 17,
+  21: 34, 22: 23, 23: 33, 24: 46, 25: 34, 26: 37, 27: 30, 28: 22, 29: 30, 30: 39 };
 for (const [n, idx] of Object.entries(KEY)) {
   const ep = require(`../content/storyboards/ep${String(n).padStart(2, '0')}.js`);
   const p = ep.panels[Math.min(idx, ep.panels.length) - 1];
@@ -151,4 +152,35 @@ sheet('supporting-4', 'ตัวละครคฤหาสน์พันปี
   { c: 'cinder', x: 1220, y: 840, s: 0.8, pose: 'hunch', expr: 'neutral', props: { n: { n: 'brazierStaff', a: -70 } }, label: 'ซินเดอร์ อะพอสเซิล' },
   { c: 'ninebell', x: 1420, y: 840, s: 0.7, pose: 'stand', expr: 'neutral', label: 'ไนน์-เบลล์' },
 ], [], 900);
+// ---------- EP21-30 ----------
+sheet('rey-costume-3', 'เรย์ — เสื้อผ้าและดาบ EP21–30', [
+  { c: 'rey', x: 130, y: 840, s: 0.82, pose: 'stand', expr: 'calm', st: { ...C.REY_EP19, backSword: false, blood: true }, props: { n: { n: 'sword', a: 80, len: 240 } }, label: 'EP21 แจ็กเก็ตชุ่มเลือด' },
+  { c: 'rey', x: 380, y: 840, s: 0.82, pose: 'stand', expr: 'focused', st: { outfit: 'shirtRolled' }, props: { n: { n: 'sword', a: 80, len: 240, cracks: true } }, label: 'EP22/25 เชิ้ตพับแขน', lx: 380 },
+  { c: 'rey', x: 630, y: 840, s: 0.82, pose: 'stand', expr: 'neutral', st: { ...C.REY_EP23 }, label: 'EP23 แจ็กเก็ตที่ซักแล้ว' },
+  { c: 'rey', x: 880, y: 840, s: 0.82, pose: 'stand', expr: 'pain', st: { ...C.REY_EP24 }, label: 'EP24 ขาด ไหม้' },
+  { c: 'rey', x: 1130, y: 840, s: 0.82, pose: 'stand', expr: 'coldShade', st: { ...C.REY_EP26 }, props: { n: { n: 'sword', a: 80, len: 240, ember: true } }, label: 'EP26–29 โค้ทดำ ดาบตีใหม่' },
+  { c: 'rey', x: 1400, y: 840, s: 0.82, pose: 'stand', expr: 'determined', st: { ...C.REY_EP30 }, label: 'EP30 โค้ททับแจ็กเก็ต' },
+], []);
+sheet('supporting-5', 'ตัวละคร EP21–30', [
+  { c: 'ilya', x: 90, y: 840, s: 0.78, pose: 'stand', expr: 'cold', props: { n: { n: 'plasmaBlade', a: 100 }, f: { n: 'plasmaBlade', a: 80 } }, label: 'อิลยา นาดีร์' },
+  { c: 'enforcer', x: 250, y: 840, s: 0.68, pose: 'stand', expr: 'neutral', props: { n: { n: 'soulCannon', a: 0 } }, label: 'หน่วยผู้คุมกฎ' },
+  { c: 'mech', x: 400, y: 840, s: 0.5, pose: 'stand', expr: '', props: { n: 'lightSaw', f: 'netGun' }, label: 'เคาน์เตอร์-ซีโร่' },
+  { c: 'revS', x: 560, y: 840, s: 0.46, pose: 'stand', expr: '', props: { n: 'thunderHammer' }, label: 'เรเวแนนท์ S' },
+  { c: 'puppet', x: 700, y: 840, s: 0.5, pose: 'stand', expr: '', props: { n: 'chainsaw' }, label: 'หุ่นเชิดฝึก' },
+  { c: 'marquis', x: 830, y: 840, s: 0.72, pose: 'stand', expr: 'smirk', props: { n: { n: 'puppetCane', a: -60 } }, label: 'มาควิส เวลเว็ต' },
+  { c: 'valentine', x: 960, y: 840, s: 0.72, pose: 'stand', expr: 'sly', props: { n: 'miniCrossbow' }, label: 'วาเลนไทน์' },
+  { c: 'corsetta', x: 1090, y: 840, s: 0.7, pose: 'stand', expr: 'cold', label: 'คอร์เซ็ตต้า' },
+  { c: 'porcelain', x: 1220, y: 840, s: 0.72, pose: 'stand', expr: 'cold', label: 'เซนต์ พอร์ซเลน' },
+  { c: 'silk', x: 1340, y: 840, s: 0.72, pose: 'stand', expr: 'calm', label: 'มาดาม ซิลค์' },
+  { c: 'sera', x: 1490, y: 840, s: 0.75, pose: 'stand', expr: 'empty', st: { outfit: 'doll', barefoot: true }, props: { n: { n: 'redBlade', a: 100 }, f: { n: 'redBlade', a: 80 } }, label: 'เซร่า (EP30)' },
+], [], 900);
+sheet('creatures-3', 'สิ่งมีชีวิต EP23–30', [
+  { c: 'rockKing', x: 330, y: 820, s: 0.62, label: 'ราชันย์อสูรเกราะหินโบราณ', lx: 380 },
+  { c: 'rockKing', x: 860, y: 840, s: 0.24, minor: true, label: 'อสูรเกราะหิน', lx: 900 },
+  { c: 'oreBeetle', x: 1040, y: 840, s: 0.8, label: 'แมลงเกราะแร่', lx: 1060 },
+  { c: 'centipede', x: 1260, y: 840, s: 0.6, label: 'ตะขาบพ่นกรด', lx: 1260 },
+  { c: 'creature', x: 1480, y: 260, s: 0.4, pose: 'ceiling', skin: '#c4c4bc', label: 'อสูรเกาะเพดานถ้ำ', lx: 1470 },
+  { c: 'nox', x: 1060, y: 640, s: 0.7, grown: 1, label: undefined },
+  { c: 'nox', x: 1300, y: 660, s: 0.7, grown: 2, sigil: true, label: undefined },
+], ['น็อกซ์: EP23 ขนาดสุนัขป่าหนุ่ม (กลาง) / EP25 สูงระดับเอว เขายาว + ตราพันธะของเรย์ (ขวา)'], 900);
 console.log('cover, thumbnails, character sheets rendered');

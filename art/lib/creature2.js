@@ -6,30 +6,43 @@ const { INK, path, circle, ellipse, g, f, smooth, P } = require('./util');
 
 const SNAKE = { red: ['#c8281e', '#ff8a4a'], blue: ['#3a7ad8', '#bfe8ff'], green: ['#3a9a4a', '#b8ffb0'], white: ['#ecebe6', '#ffffff'], black: ['#1a1a20', '#c0172a'] };
 
-// Nox: round black pup, two small horns, red-violet eyes, smoke from the tail.
+// Nox: black demon dog, two horns, red-violet eyes, smoke from the tail.
+// spec.grown: 0 pup (ch.19-23) / 1 young wolf (ch.23 L196) / 2 waist-high with long
+// spear-like horns and violet-gold light under the fur (ch.25 L14, L164).
+// spec.sigil: Rey's pact mark on the forehead (clock ring over a fang, ch.25 L192).
 function nox(spec) {
-  const s = spec.s || 1, m = spec.face === 'l' ? -1 : 1;
+  const s = spec.s || 1, m = spec.face === 'l' ? -1 : 1, gr = spec.grown || 0;
   const o = [];
   const pose = spec.pose || 'sit';
-  o.push(path('M-46,-20 q-30,-30 -18,-60 q4,20 18,30', { stroke: '#2a2830', strokeWidth: 10, fill: 'none', strokeLinecap: 'round' }));
-  for (let i = 0; i < 4; i++) o.push(circle(-62 + i * 6, -86 - i * 16, 8 + i * 3, { fill: '#3a3640', opacity: 0.4 - i * 0.08 }));
-  if (pose === 'run') o.push(path('M-30,0 l-24,20 M30,0 l26,18', { stroke: INK, strokeWidth: 16, strokeLinecap: 'round' }) + path('M-30,0 l-24,20 M30,0 l26,18', { stroke: '#121117', strokeWidth: 11, strokeLinecap: 'round' }));
-  else o.push(path('M-24,4 l-4,22 M26,4 l2,22', { stroke: INK, strokeWidth: 16, strokeLinecap: 'round' }) + path('M-24,4 l-4,22 M26,4 l2,22', { stroke: '#121117', strokeWidth: 11, strokeLinecap: 'round' }));
-  o.push(ellipse(0, -14, 52, 38, { fill: '#121117', stroke: INK, strokeWidth: 3 }));
-  o.push(path('M-20,-38 q14,-8 30,0', { stroke: '#3a3842', strokeWidth: 3, fill: 'none' }));
+  const legL = 22 + gr * 14, bw = 52 + gr * 20, bh = 38 + gr * 3, horn = 28 + gr * 26;
+  const lift = gr * 14; // body rises with leg length
+  o.push(path(`M${-bw + 6},${-20 - lift} q-30,-30 -18,-60 q4,20 18,30`, { stroke: '#2a2830', strokeWidth: 10 + gr * 2, fill: 'none', strokeLinecap: 'round' }));
+  for (let i = 0; i < 4; i++) o.push(circle(-bw - 10 + i * 6, -86 - lift - i * 16, 8 + i * 3, { fill: '#3a3640', opacity: 0.4 - i * 0.08 }));
+  const lw = 16 + gr * 3;
+  const legs = pose === 'run' ? `M-30,${-lift} l-24,${legL + lift - 2} M30,${-lift} l26,${legL + lift - 4}` : `M-24,${4 - lift} l-4,${legL + lift} M26,${4 - lift} l2,${legL + lift}`;
+  o.push(path(legs, { stroke: INK, strokeWidth: lw, strokeLinecap: 'round' }) + path(legs, { stroke: '#121117', strokeWidth: lw - 5, strokeLinecap: 'round' }));
+  o.push(ellipse(0, -14 - lift, bw, bh, { fill: '#121117', stroke: INK, strokeWidth: 3 }));
+  o.push(path(`M-20,${-38 - lift} q14,-8 30,0`, { stroke: '#3a3842', strokeWidth: 3, fill: 'none' }));
+  if (gr >= 1) o.push(path(`M${-bw * 0.6},${-20 - lift} q${bw * 0.4},-14 ${bw * 0.9},-4 M${-bw * 0.4},${-4 - lift} q${bw * 0.5},-10 ${bw * 0.9},0`, { stroke: gr >= 2 ? '#d8a8ff' : '#7a4aa0', strokeWidth: 2.4, fill: 'none', opacity: 0.8 }));
+  if (gr >= 2) o.push(path(`M${-bw * 0.2},${-30 - lift} l10,-6 l6,8 l10,-8`, { stroke: '#ffd45a', strokeWidth: 2, fill: 'none', opacity: 0.8 }));
   // head
-  const hx = 40, hy = -52;
-  o.push(path(`M${hx - 30},${hy - 26} L${hx - 34},${hy - 54} L${hx - 18},${hy - 32}Z M${hx + 16},${hy - 30} L${hx + 22},${hy - 58} L${hx + 28},${hy - 28}Z`, { fill: '#1e1c24', stroke: INK, strokeWidth: 2.4 }));
+  const hx = 40 + gr * 14, hy = -52 - lift - gr * 6;
+  if (!gr) o.push(path(`M${hx - 30},${hy - 26} L${hx - 34},${hy - 54} L${hx - 18},${hy - 32}Z M${hx + 16},${hy - 30} L${hx + 22},${hy - 58} L${hx + 28},${hy - 28}Z`, { fill: '#1e1c24', stroke: INK, strokeWidth: 2.4 }));
+  else o.push(path(`M${hx - 30},${hy - 26} C${hx - 40},${hy - 26 - horn * 0.6} ${hx - 50},${hy - 26 - horn} ${hx - 60},${hy - 30 - horn * 1.2} C${hx - 36},${hy - 30 - horn * 0.7} ${hx - 26},${hy - 40} ${hx - 18},${hy - 32}Z M${hx + 16},${hy - 30} C${hx + 18},${hy - 30 - horn * 0.6} ${hx + 10},${hy - 30 - horn} ${hx + 2},${hy - 34 - horn * 1.2} C${hx + 26},${hy - 30 - horn * 0.8} ${hx + 32},${hy - 40} ${hx + 28},${hy - 28}Z`, { fill: '#1e1c24', stroke: INK, strokeWidth: 2.4 }));
   o.push(path(`M${hx - 40},${hy - 16} l-14,-24 l18,10Z M${hx + 34},${hy - 18} l12,-24 l2,22Z`, { fill: '#121117', stroke: INK, strokeWidth: 2.4 }));
   o.push(circle(hx, hy, 36, { fill: '#121117', stroke: INK, strokeWidth: 3 }));
-  o.push(ellipse(hx + 20, hy + 14, 18, 13, { fill: '#1e1c24', stroke: INK, strokeWidth: 2 }) + ellipse(hx + 32, hy + 8, 5, 4, { fill: '#3a3842' }));
+  o.push(ellipse(hx + 20 + gr * 6, hy + 14, 18 + gr * 6, 13, { fill: '#1e1c24', stroke: INK, strokeWidth: 2 }) + ellipse(hx + 32 + gr * 10, hy + 8, 5, 4, { fill: '#3a3842' }));
   const eye = spec.eye || '#e0304a';
   if (spec.expr === 'happy') o.push(path(`M${hx - 16},${hy - 2} q6,-8 12,0 M${hx + 6},${hy - 4} q6,-8 12,0`, { stroke: eye, strokeWidth: 4, fill: 'none', strokeLinecap: 'round' }));
+  else if (gr >= 1) o.push(path(`M${hx - 18},${hy - 2} l14,-6 l0,8Z M${hx + 4},${hy - 6} l16,-4 l-2,8Z`, { fill: eye }) + circle(hx - 10, hy - 4, 14, { fill: '#b14bff', opacity: 0.2 }) + circle(hx + 12, hy - 6, 14, { fill: '#b14bff', opacity: 0.2 }));
   else o.push(circle(hx - 10, hy - 4, 8, { fill: eye }) + circle(hx + 12, hy - 6, 8, { fill: eye }) + circle(hx - 7, hy - 7, 2.6, { fill: '#fff' }) + circle(hx + 15, hy - 9, 2.6, { fill: '#fff' }) + circle(hx - 10, hy - 4, 14, { fill: eye, opacity: 0.18 }) + circle(hx + 12, hy - 6, 14, { fill: eye, opacity: 0.18 }));
+  if (spec.sigil) o.push(circle(hx + 2, hy - 22, 9, { fill: 'none', stroke: '#ff2a3a', strokeWidth: 2.4 }) + path(`M${hx + 2},${hy - 30} l0,8 l5,3 M${hx - 2},${hy - 16} l4,8 l4,-8`, { stroke: '#ff2a3a', strokeWidth: 2, fill: 'none' }) + circle(hx + 2, hy - 22, 16, { fill: '#ff2a3a', opacity: 0.25 }));
   if (spec.open) o.push(path(`M${hx + 8},${hy + 18} q14,16 30,0Z`, { fill: '#5a1420', stroke: INK, strokeWidth: 2 }) + path(`M${hx + 14},${hy + 18} l2,6 l2,-6 M${hx + 28},${hy + 18} l2,6 l2,-6`, { fill: '#fff' }));
+  if (spec.charge) o.push(circle(hx + 30, hy + 20, 16, { fill: '#1a0a26', stroke: '#b14bff', strokeWidth: 4 }) + circle(hx + 30, hy + 20, 30, { fill: '#9a3aff', opacity: 0.35 }));
   if (spec.tongue) o.push(path(`M${hx + 22},${hy + 20} q4,14 -2,18 q-6,-4 -2,-18`, { fill: '#e05a7a', stroke: INK, strokeWidth: 1.4 }));
-  const svg = g(o.join(''), { transform: `translate(${f(spec.x || 0)},${f(spec.y || 0)}) rotate(${spec.rot || 0}) scale(${f(s * m * 1000) / 1000},${s}) translate(0,-26)` });
-  return { svg, head: [(spec.x || 0) + m * s * hx, (spec.y || 0) + s * (hy - 26)], r: 36 * s };
+  if (spec.sparks) o.push(path(`M${hx + 30},${hy + 30} l-6,14 l8,-2 l-6,14 M${hx - 10},${hy + 30} l4,12 l-6,0 l4,12`, { stroke: '#d8a8ff', strokeWidth: 2.4, fill: 'none' }));
+  const svg = g(o.join(''), { transform: `translate(${f(spec.x || 0)},${f(spec.y || 0)}) rotate(${spec.rot || 0}) scale(${f(s * m * 1000) / 1000},${s}) translate(0,${-26 - (legL - 22)})` });
+  return { svg, head: [(spec.x || 0) + m * s * hx, (spec.y || 0) + s * (hy - 26 - (legL - 22))], r: 36 * s };
 }
 
 // Small elemental snake. kind: red/blue/green/white/black. Coiled S body + hood.

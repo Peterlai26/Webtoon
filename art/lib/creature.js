@@ -16,7 +16,7 @@ function creature(spec) {
   const pose = { ...(POSE[spec.pose] || POSE.crouch), ...(spec.po || {}) };
   const D = { torso: 170, sw: 54, waist: 38, hw: 40, ua: 130, fa: 130, th: 150, sh: 160, headR: 40, neck: 28, uaW: 16, faW: 13, thW: 20, shW: 15 };
   const { j, T, headAng } = computeRig(pose, D);
-  const skin = '#8fa3b0', o = [];
+  const skin = spec.skin || '#8fa3b0', o = [];
   const st = spec.st || {};
   const limb = (a, b, c) => path(`M${P(a)} L${P(b)} L${P(c)}`, { stroke: INK, strokeWidth: 20, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' }) + path(`M${P(a)} L${P(b)} L${P(c)}`, { stroke: skin, strokeWidth: 14, fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' });
   const claw = (p, ang) => [ -20, 0, 20 ].map((d) => path(`M${P(p)} L${P(pt(p, ang + d, 30))}`, { stroke: '#e8e2d0', strokeWidth: 4, strokeLinecap: 'round' })).join('');

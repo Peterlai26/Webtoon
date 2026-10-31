@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 // Browser end-to-end check against a running server (uses Playwright).
-// Usage: BASE=http://localhost:3000 ADMIN_USERNAME=admin ADMIN_PASSWORD=... node scripts/e2e-check.js
+// Usage: BASE=http://localhost:3000 ADMIN_USERNAME=admin ADMIN_PASSWORD=... [EPISODES=30] node scripts/e2e-check.js
 // Note: this edits EP1 panel 3's first bubble text and adds/removes a panel.
 'use strict';
 const { chromium } = require('playwright');
 const path = require('path');
 const B = process.env.BASE || 'http://localhost:3000';
+const EPS = Number(process.env.EPISODES || 30); // number of published episodes expected
 const SHOTS = process.env.SHOTS || '';
 const shot = (p, name) => (SHOTS ? p.screenshot({ path: path.join(SHOTS, name) }) : null);
 
@@ -18,7 +19,7 @@ const shot = (p, name) => (SHOTS ? p.screenshot({ path: path.join(SHOTS, name) }
 
   const m = await b.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 }); watch(m);
   let total = 0;
-  for (let n = 1; n <= 10; n++) {
+  for (let n = 1; n <= EPS; n++) {
     await m.goto(`${B}/episode/${n}`);
     await m.waitForSelector('.panel img');
     const r = await m.evaluate(async () => {
@@ -28,11 +29,11 @@ const shot = (p, name) => (SHOTS ? p.screenshot({ path: path.join(SHOTS, name) }
     });
     total += r.n;
     check(r.n > 0 && r.bad === 0 && !r.overflow, `EP${n}: ${r.n} panels loaded, ${r.bubbles} text overlays, no horizontal overflow (mobile)`);
-    check((n === 1 ? r.prev === null : r.prev === `/episode/${n - 1}`) && (n === 10 ? r.next === null : r.next === `/episode/${n + 1}`), `EP${n}: prev/next links`);
+    check((n === 1 ? r.prev === null : r.prev === `/episode/${n - 1}`) && (n === EPS ? r.next === null : r.next === `/episode/${n + 1}`), `EP${n}: prev/next links`);
   }
   console.log(`total panels: ${total}`);
   await m.goto(B + '/'); await m.waitForSelector('.ep-item'); await shot(m, 'home-mobile.png');
-  check(await m.locator('.ep-item').count() === 10, 'home lists 10 episodes');
+  check(await m.locator('.ep-item').count() === EPS, `home lists ${EPS} episodes`);
   check(await m.locator('#cover').isVisible(), 'home shows cover');
   await m.click('#read-first'); await m.waitForURL(/episode\/1$/);
   check(true, 'home "read first" button opens EP1');
@@ -49,7 +50,7 @@ const shot = (p, name) => (SHOTS ? p.screenshot({ path: path.join(SHOTS, name) }
     await a.goto(B + '/admin');
     await a.fill('input[name=username]', process.env.ADMIN_USERNAME || 'admin'); await a.fill('input[name=password]', process.env.ADMIN_PASSWORD); await a.click('#login-form button');
     await a.waitForSelector('#ep-rows tr'); await shot(a, 'admin-list.png');
-    check(await a.locator('#ep-rows tr').count() === 10, 'admin lists 10 episodes');
+    check(await a.locator('#ep-rows tr').count() === EPS, `admin lists ${EPS} episodes`);
     await a.locator('#ep-rows tr').first().locator('a').click(); await a.waitForSelector('.panel-card');
     const before = await a.locator('.panel-card').count();
     await a.locator('.panel-card').nth(2).getByText('แก้ไขข้อความ').click(); await a.waitForSelector('#ed-canvas .bubble');

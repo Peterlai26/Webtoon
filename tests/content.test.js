@@ -1,5 +1,5 @@
 'use strict';
-// Content QA: scope (EP1-20 only), source references, no Thai text inside the
+// Content QA: scope (EP1-30 only), source references, no Thai text inside the
 // artwork, the normalised names/numbers, and continuity rules.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
@@ -9,10 +9,10 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const SB = path.join(ROOT, 'content', 'storyboards');
 const OUT = path.join(ROOT, 'art', 'out');
-const eps = Array.from({ length: 20 }, (_, i) => require(path.join(SB, `ep${String(i + 1).padStart(2, '0')}.js`)));
+const eps = Array.from({ length: 30 }, (_, i) => require(path.join(SB, `ep${String(i + 1).padStart(2, '0')}.js`)));
 const THAI = /[฀-๿]/;
 
-test('exactly episodes 1-20 exist, numbered in order, no EP21+', () => {
+test('exactly episodes 1-30 exist, numbered in order, no EP31+', () => {
   const files = fs.readdirSync(SB).filter((f) => /^ep\d+\.js$/.test(f)).sort();
   assert.deepEqual(files, eps.map((_, i) => `ep${String(i + 1).padStart(2, '0')}.js`));
   eps.forEach((ep, i) => {
@@ -53,12 +53,16 @@ test('normalised source inconsistencies are applied in dialogue', () => {
   // EP11-20 source typos (stray CJK / Cyrillic / Spanish words, doubled vowel)
   assert.ok(!/[\u4e00-\u9fff\u0400-\u04ff]/.test(all), 'stray CJK/Cyrillic glyphs');
   assert.ok(!/mientras|\byang\b|ฟัังดู/.test(all), 'stray source typos');
+  // EP21-30 source typos: stray Devanagari (ch.22 L46) / Bengali (ch.24 L254) glyphs
+  assert.ok(!/[\u0900-\u097f\u0980-\u09ff]/.test(all), 'stray Devanagari/Bengali glyphs');
 });
 
 test('characters only appear from the episode they are introduced in the source', () => {
   const firstEp = { lilith: 3, grey: 3, ash: 4, knell: 5, creature: 5, latch: 6, suture: 6, vale: 6, raze: 10,
     stranger: 11, bruno: 13, cherry: 13, hostess: 13, velvetGuard: 13, mothkid: 14, roxy: 15, vane: 16, cassian: 16, snake: 16, varan: 17, arachne: 18,
-    nox: 19, gula: 19, volt: 19, claire: 19, grimm: 19, rivetKing: 19, kier: 19, cinder: 19, ninebell: 19 };
+    nox: 19, gula: 19, volt: 19, claire: 19, grimm: 19, rivetKing: 19, kier: 19, cinder: 19, ninebell: 19,
+    puppet: 22, oreBeetle: 23, rockKing: 24, centipede: 24, claireBones: 24, ilya: 26, mech: 26, enforcer: 27, revS: 28,
+    marquis: 30, valentine: 30, corsetta: 30, porcelain: 30, silk: 30 };
   for (const ep of eps) for (const p of ep.panels) for (const l of p.L || []) {
     if (l.c && firstEp[l.c]) assert.ok(ep.number >= firstEp[l.c], `${l.c} appears in EP${ep.number} before introduction`);
   }
@@ -73,3 +77,20 @@ test('episode endings stay on the source ending (last panel cites the final sour
     assert.ok(Math.max(...nums) >= (ep.sourceEnd || lastLine(ep)) - 4, `EP${ep.number} ends at ${last}, source has ${lastLine(ep)} lines`);
   }
 });
+
+test('EP21-30 continuity: Nox grows in EP23 / EP25 and carries the pact with Rey from EP25 L192 on; reforged sword from EP25', () => {
+  const layers = (ep) => ep.panels.flatMap((p) => (p.L || []).map((l) => ({ l, src: p.src })));
+  for (const ep of eps.filter((e) => e.number >= 21)) for (const { l, src } of layers(ep)) {
+    if (l.c === 'nox') {
+      const g = l.grown || 0;
+      if (ep.number <= 22) assert.equal(g, 0, `EP${ep.number} Nox must still be a pup`);
+      if (ep.number >= 24 && ep.number <= 25) assert.ok(g >= 1, `EP${ep.number} ${src} Nox grew in EP23`);
+      if (ep.number >= 26) assert.ok(g === 2 && l.sigil, `EP${ep.number} ${src} Nox is grown and bound to Rey`);
+    }
+    if (l.c && l.props) for (const pr of Object.values(l.props)) if (pr && pr.n === 'sword') {
+      if (ep.number <= 24) assert.ok(!pr.ember, `EP${ep.number} ${src} sword reforged too early`);
+      if (ep.number >= 26) assert.ok(pr.ember, `EP${ep.number} ${src} sword must be the reforged blade`);
+    }
+  }
+});
+
