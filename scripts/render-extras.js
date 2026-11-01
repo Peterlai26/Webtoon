@@ -34,7 +34,8 @@ fs.writeFileSync(path.join(OUT, 'cover.svg'), cover.svg);
 // ---------- episode thumbnails: a square re-render of a key panel ----------
 const KEY = { 1: 23, 2: 13, 3: 26, 4: 31, 5: 46, 6: 33, 7: 13, 8: 18, 9: 18, 10: 12, 11: 31, 12: 7, 13: 19, 14: 16, 15: 24, 16: 7, 17: 17, 18: 20, 19: 24, 20: 17,
   21: 34, 22: 23, 23: 33, 24: 46, 25: 34, 26: 37, 27: 30, 28: 22, 29: 30, 30: 39,
-  31: 38, 32: 16, 33: 13, 34: 27, 35: 12, 36: 17, 37: 7, 38: 8, 39: 16, 40: 2, 41: 5, 42: 14, 43: 12, 44: 17, 45: 18 };
+  31: 38, 32: 16, 33: 13, 34: 27, 35: 12, 36: 17, 37: 7, 38: 8, 39: 16, 40: 2, 41: 5, 42: 14, 43: 12, 44: 17, 45: 18,
+  46: 16, 47: 22, 48: 17, 49: 12, 50: 2, 51: 25, 52: 19, 53: 13, 54: 13, 55: 23, 56: 7, 57: 24, 58: 22, 59: 10, 60: 14, 61: 11, 62: 12, 63: 11, 64: 7, 65: 19 };
 for (const [n, idx] of Object.entries(KEY)) {
   const ep = require(`../content/storyboards/ep${String(n).padStart(2, '0')}.js`);
   const p = ep.panels[Math.min(idx, ep.panels.length) - 1];
@@ -226,5 +227,25 @@ sheet('creatures-4', 'สิ่งมีชีวิต EP31–45', [
   { c: 'whiteDragon', x: 560, y: 860, s: 0.7, label: 'มังกรขาวของเซอร์ ดราเกน', lx: 500 },
   { c: 'lightHound', x: 1100, y: 840, s: 0.8, label: 'สุนัขล่าเนื้อเกราะแสง', lx: 1160 },
   { c: 'quadMech', x: 1420, y: 840, s: 0.7, label: 'หุ่นรบจักรกลแสงสี่ขา', lx: 1430 },
+], [], 900);
+sheet('honourables-2', 'โซลาริส — ผู้ทรงเกียรติยศอักษรเค / อักษรอา และขุนพลมือขวา (EP50–65)', [
+  { c: 'kinesis', x: 100, y: 860, s: 0.52, pose: 'stand', expr: 'cold', face: 'front', label: 'เซอร์ ไคเนซิส (K)' },
+  { c: 'rail', x: 260, y: 860, s: 0.62, pose: 'aimRifle', expr: 'cold', props: { right: { n: 'railArm' } }, label: 'กัปตัน เรล (R)' },
+  { c: 'valkor', x: 470, y: 860, s: 0.55, pose: 'stand', expr: 'furious', face: 'front', props: { n: { n: 'plasmaGlaive', a: 10 } }, label: 'วาลคอร์ (มือขวา D)' },
+  { c: 'sadis', x: 640, y: 860, s: 0.58, pose: 'hunch', expr: 'manic', face: 'front', label: 'ซาดิส (มือขวา T)' },
+  { c: 'gargoyle', x: 800, y: 860, s: 0.48, pose: 'stand', expr: 'furious', face: 'front', props: { n: 'hammerFist', f: 'hammerFist' }, label: 'การ์กอยล์ (มือขวา B)' },
+  { c: 'vesper', x: 980, y: 860, s: 0.62, pose: 'stand', expr: 'cold', face: 'front', props: { n: 'chainSickle' }, label: 'เวสเปอร์ (มือขวา H)' },
+  { c: 'centurion', x: 1140, y: 860, s: 0.48, pose: 'stand', expr: 'neutral', face: 'front', props: { f: 'magShield' }, label: 'เซนทูเรียน (มือขวา K)' },
+  { c: 'voltage', x: 1300, y: 860, s: 0.58, pose: 'stand', expr: 'grin', face: 'front', props: { n: 'magGun' }, label: 'โวลเทจ (มือขวา R)' },
+  { c: 'draken', x: 1480, y: 860, s: 0.5, pose: 'stand', expr: 'cold', face: 'front', st: { aura: true }, props: { n: { n: 'dragonLance', a: -70 } }, label: 'ดราเกน: มังกรสถิต' },
+], ['ผู้ทรงเกียรติยศที่ปรากฏครั้งแรกในศึกอาณาจักรหน้าเดียว และขุนพลมือขวาประจำตัวทั้งหก'], 900);
+sheet('oneface-2', 'อาณาจักรหน้าเดียว — หน่วยรบพิเศษ ต้นฉบับ และผู้สืบทอดของกริมม์ (EP46–65)', [
+  { c: 'mono', x: 80, y: 860, s: 0.7, pose: 'stand', expr: 'nervous', face: 'front', label: 'โมโน (ต้นฉบับ)' },
+  ...[['setsu', 'redBand', '#18171d', 'เซ็ตสึ', { n: { n: 'katana', a: 30 } }], ['tax', 'scales', '#6a6a72', 'แท็กซ์', { n: 'quill', f: 'notebook' }], ['tempo', 'clock', '#141318', 'เทมโป', { f: { n: 'pocketWatch' } }], ['caliber', 'silverLiner', '#2a2a34', 'คาลิเบอร์', { n: 'heavyPistol' }], ['clatter', 'yellowLiner', '#4a4a52', 'แคลตเตอร์', {}], ['alchem', 'goldBrow', '#6a5a3a', 'อัลเคม', {}], ['rumor', 'bolt', '#5a5e66', 'รูมอร์', {}], ['mime', 'liner', '#2a2a32', 'ไมม์', {}], ['malus', 'purple', '#3a1a4a', 'มาลัส', {}]].map(([id, paint, col, label, props], i) => ({ c: 'oneface', x: 200 + i * 120, y: 860, s: 0.55, pose: 'stand', expr: 'neutral', face: 'front', st: { paint, col }, props, label })),
+  { c: 'oneface', x: 1330, y: 860, s: 0.52, pose: 'stand', expr: 'empty', face: 'front', st: { col: '#f2f0ec', trim: '#c9ced8' }, label: '#41,209' },
+  { c: 'grimmFace', x: 1470, y: 860, s: 0.55, pose: 'stand', expr: 'neutral', face: 'front', st: { maskUp: true }, label: 'กริมม์ (หน้ากากคาดหัว)' },
+], ['ทุกคนใช้ใบหน้าเดียวกัน — แยกด้วยการแต่งหน้า รูปร่าง และอาวุธ', 'ร่างใหม่สองร่างของกริมม์ (#41,209 / #41,210) สวมชุดคลุมขาวของผู้เพิ่งเกิด ไม่มีความทรงจำเดิม'], 900);
+sheet('creatures-5', 'ร่างสุดท้ายของเซอร์ ดราเกน (EP63–65)', [
+  { c: 'sunDragon', x: 800, y: 880, s: 0.62, label: 'มหาสัตตมังกรสุริยะหลอมวิญญาณ — สูงกว่าสิบสองเมตร หกปีกพลาสมา', lx: 800 },
 ], [], 900);
 console.log('cover, thumbnails, character sheets rendered');
