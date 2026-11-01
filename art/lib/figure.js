@@ -692,6 +692,7 @@ function razeBlade(D, L, rightNear, st) {
 Object.assign(CHARS, require('./cast2')({ SK, OL, coatTorso, plainTorso, armourTorso, leatherCoatTorso }));
 Object.assign(CHARS, require('./cast3')({ SK, OL, purifierHelmet }));
 Object.assign(CHARS, require('./cast4')({ SK, OL, coatTorso, purifierHelmet, CHARS }));
-const C2 = { ...require('./creature2'), ...require('./creature3'), ...require('./creature4') };
+Object.assign(CHARS, require('./cast5')({ CHARS }));
+const C2 = { ...require('./creature2'), ...require('./creature3'), ...require('./creature4'), ...require('./creature5') };
 
 module.exports = { figure, CHARS, sideInfo, META };

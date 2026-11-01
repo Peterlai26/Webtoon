@@ -105,6 +105,7 @@ const FX = {
 Object.assign(FX, require('./fx2')({ glow }));
 Object.assign(FX, require('./fx3')({ glow }));
 Object.assign(FX, require('./fx4')({ glow }));
+Object.assign(FX, require('./fx5')({ glow }));
 
 function fx(name, W, H, o = {}) {
   const fn = FX[name];

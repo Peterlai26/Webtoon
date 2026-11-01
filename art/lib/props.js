@@ -266,6 +266,8 @@ Object.assign(PROPS, {
   tablet() { return rect(-4, -30, 60, 46, { fill: '#cfe6ff', opacity: 0.5, ...S, rx: 4 }) + rect(4, -22, 30, 4, { fill: '#3fe0d0' }) + rect(4, -14, 40, 3, { fill: '#3fe0d0', opacity: 0.6 }); },
 });
 
+Object.assign(PROPS, require('./props5')(PROPS));
+
 function prop(name, o) {
   const fn = PROPS[name];
   if (!fn) throw new Error(`unknown prop ${name}`);

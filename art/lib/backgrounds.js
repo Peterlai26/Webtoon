@@ -437,6 +437,7 @@ function turret(x, y) {
 Object.assign(BG, require('./backgrounds2')({ grad, glow }));
 Object.assign(BG, require('./backgrounds3')({ grad, glow }));
 Object.assign(BG, require('./backgrounds4')({ grad, glow }));
+Object.assign(BG, require('./backgrounds5')({ grad, glow }));
 
 function background(name, W, H, o = {}) {
   const fn = BG[name];
