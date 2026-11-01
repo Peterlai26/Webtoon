@@ -131,4 +131,6 @@ test('EP46-65 continuity: Grimm dies in EP58, Velen in EP61; the lieutenants sta
     if (['regulus', 'warden', 'mono', 'draken', 'sunDragon'].includes(l.c)) assert.ok(ep.number <= 65, `${l.c}`);
     if (l.c === 'rey' && l.props) for (const pr of Object.values(l.props)) if (pr && pr.n === 'sword') assert.ok(pr.ember, `EP${ep.number} ${p.src}`);
   }
+  // Rey has no time-rewind (author's ruling on ch.59 L195-217): his power is the ten-second body reset only
+  for (const ep of eps.filter((e) => e.number >= 46)) for (const p of ep.panels) for (const t of [p.n, ...(p.T || []).map((x) => x.t)]) assert.ok(!/ย้อนเวลา|ย้อนกลับไปสิบวินาที|ดีดย้อน|เวลาย้อน/.test(t), `EP${ep.number} ${p.src}: Rey cannot rewind time`);
 });
