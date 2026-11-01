@@ -1,8 +1,8 @@
-<title>RESET: 00:10</title>
+<title>คลังเว็บตูน</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;800&family=Mali:wght@400;600;700&display=swap">
 <style>
-/* Layout: one centred 720px reading column; home = cover + synopsis + episode list, reader = vertical strip. Single dark theme (webtoon reading mode). */
+/* Layout: library home = shelf of series covers; series page = cover + one-tap episode picker + episode list; reader = 720px vertical strip with the picker in the sticky bar. Single dark theme (webtoon reading mode). */
 :root {
   --bg: #0d0c12; --bg2: #16141e; --card: #1d1a27; --line: #2e2a3b; --text: #ece9f3; --muted: #a29cb4;
   --accent: #e0263b; --accent2: #7ae6ff;
@@ -11,33 +11,51 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--display); }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
 a { color: inherit; }
-button { font: inherit; color: inherit; }
+button, select { font: inherit; color: inherit; }
 .wrap { max-width: 1000px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: rgba(13,12,18,.94); border-bottom: 1px solid var(--line); backdrop-filter: blur(8px); }
 .bar .wrap { display: flex; align-items: center; gap: 8px; min-height: 56px; }
-.logo { font-weight: 800; letter-spacing: .04em; font-size: 19px; text-decoration: none; white-space: nowrap; }
-.logo b { color: var(--accent); }
-.bar .title { flex: 1; min-width: 0; text-align: center; font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logo { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; letter-spacing: .02em; font-size: 18px; text-decoration: none; white-space: nowrap; min-height: 44px; }
+.logo svg { width: 26px; height: 26px; flex: none; }
+.bar .title { flex: 1; min-width: 0; font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pick { flex: 1; min-width: 0; display: flex; }
+.pick select { width: 100%; min-width: 0; min-height: 44px; padding: 8px 36px 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237ae6ff' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 14px center; appearance: none; -webkit-appearance: none; font-weight: 600; font-size: 15px; cursor: pointer; text-overflow: ellipsis; }
+.pick select:hover { border-color: var(--muted); }
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); text-decoration: none; font-weight: 600; cursor: pointer; }
 .btn:hover { border-color: var(--muted); }
 .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .btn[aria-disabled="true"] { opacity: .35; pointer-events: none; }
-.icon { min-height: 44px; min-width: 44px; padding: 0 10px; border: 1px solid transparent; border-radius: 10px; background: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; }
+.icon { min-height: 44px; min-width: 44px; padding: 0 10px; border: 1px solid transparent; border-radius: 10px; background: none; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; white-space: nowrap; }
 .icon:hover { border-color: var(--line); }
 .icon[aria-disabled="true"] { opacity: .3; pointer-events: none; }
 :focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; }
 
+.shelf-head { padding-block: 28px 8px; }
+.shelf-head h1 { font-size: clamp(30px, 6vw, 48px); line-height: 1.1; margin: 0 0 6px; font-weight: 800; text-wrap: balance; }
+.shelf-head p { margin: 0; color: var(--muted); }
+.shelf { list-style: none; padding: 0; margin: 20px 0 48px; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 20px; }
+.book { display: grid; gap: 10px; text-decoration: none; }
+.book .cover { width: 100%; }
+.book:hover .cover { outline: 2px solid var(--accent2); outline-offset: 3px; }
+.book .bt { font-weight: 700; font-size: 18px; line-height: 1.3; }
+.book .bm { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.book .bm b { color: var(--accent2); font-weight: 600; }
+.badge { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--accent); color: #fff; }
+
 .hero { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 32px; padding-block: 28px; align-items: center; }
 .cover { aspect-ratio: 8 / 11; max-width: 100%; border-radius: 12px; overflow: hidden; background: var(--bg2); box-shadow: 0 20px 60px rgba(0,0,0,.5); }
 .cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-h1 { font-size: clamp(40px, 8vw, 72px); line-height: 1; margin: 0 0 8px; font-weight: 800; letter-spacing: .02em; text-wrap: balance; }
-h1 span { color: var(--accent); }
+h1.series { font-size: clamp(40px, 8vw, 72px); line-height: 1; margin: 0 0 8px; font-weight: 800; letter-spacing: .02em; text-wrap: balance; }
+h1.series span { color: var(--accent); }
 .tagline { color: var(--accent2); font-weight: 600; margin: 0 0 14px; }
 .synopsis { color: var(--muted); white-space: pre-line; margin: 0 0 20px; max-width: 62ch; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.jump { display: grid; gap: 6px; margin-top: 16px; max-width: 420px; }
+.jump label { font-size: 13px; color: var(--muted); }
 .note { color: var(--muted); font-size: 13px; margin-top: 14px; }
 .list-head { display: flex; justify-content: space-between; align-items: baseline; margin: 16px 0 10px; }
 .list-head h2 { margin: 0; font-size: 21px; }
@@ -52,15 +70,19 @@ h1 span { color: var(--accent); }
 .count { color: var(--muted); font-size: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 @media (max-width: 720px) {
   .hero { grid-template-columns: minmax(0, 1fr); gap: 20px; padding-block: 18px; }
-  .cover { width: min(300px, 100%); margin: 0 auto; }
+  .hero .cover { width: min(300px, 100%); margin: 0 auto; }
   .eps a { grid-template-columns: 72px minmax(0, 1fr); }
   .thumb { width: 72px; }
   .count { grid-column: 2; }
+  .shelf { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 }
+@media (max-width: 560px) { .logo .lt { display: none; } .bar .wrap { gap: 4px; } .icon { padding: 0 6px; min-width: 40px; } }
+
 
 .ep-head { max-width: 720px; margin: 0 auto; padding: 26px 16px; text-align: center; background: linear-gradient(var(--bg2), #000); }
 .ep-head h2 { margin: 4px 0; font-size: clamp(22px, 5vw, 32px); line-height: 1.25; text-wrap: balance; }
 .ep-head .sub { color: var(--muted); font-style: italic; }
+.ep-head a.no { display: inline-block; text-decoration: none; color: var(--muted); }
 .strip { max-width: 720px; margin: 0 auto; background: #000; }
 .gap { background: #000; }
 .panel { position: relative; margin: 0; container-type: inline-size; background: #111; overflow: hidden; max-width: 100%; }
@@ -95,60 +117,128 @@ h1 span { color: var(--accent); }
 .k-think.tail-t::after { bottom: calc(100% + 1.1em); left: calc(var(--tx) + .5em); width: .4em; height: .4em; margin: 0; }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
 </style>
+</style>
 
 <header class="bar"><div class="wrap">
-  <a class="logo" href="#">RESET<b>:</b> 00:10</a>
-  <a class="icon" id="prev" aria-disabled="true">‹ ก่อน</a>
+  <a class="logo" href="#" aria-label="คลังเว็บตูน — หน้าหลัก"><svg viewBox="0 0 26 26" aria-hidden="true"><rect x="2" y="4" width="6" height="18" rx="1.5" fill="#e0263b"/><rect x="10" y="2" width="6" height="20" rx="1.5" fill="#7ae6ff"/><rect x="18" y="6" width="6" height="16" rx="1.5" fill="#a29cb4"/></svg><span class="lt">คลังเว็บตูน</span></a>
+  <a class="icon" id="prev" aria-disabled="true" aria-label="ตอนก่อนหน้า" hidden>‹</a>
+  <div class="pick" id="pick-wrap" hidden><select id="ep-pick" aria-label="เลือกตอน"></select></div>
   <div class="title" id="bar-title"></div>
-  <a class="icon" id="next" aria-disabled="true">ถัดไป ›</a>
+  <a class="icon" id="next" aria-disabled="true" aria-label="ตอนถัดไป" hidden>›</a>
 </div></header>
 <main id="app"><div class="loading">กำลังโหลด…</div></main>
 
 <script>
+// Data layout: data/library.json lists every series { slug, title, tagline, base, cover, episodes, latest }.
+// Each series keeps its own files at <base>index.json and <base>epNN.json.
+// Routes (hash): '' = library, #<slug> = series page, #<slug>-ep-<n> = reader. Old links #ep-<n> open the first series.
 const app = document.getElementById('app');
 const cache = {};
 const urls = [];
-let index = null;
+let library = null;
+const seriesIndex = {};
 
 function svgUrl(svg) { const u = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' })); urls.push(u); return u; }
 function freeUrls() { while (urls.length) URL.revokeObjectURL(urls.pop()); }
-async function getJson(name) {
-  if (!cache[name]) cache[name] = fetch('data/' + name).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
-  return cache[name];
+function getJson(path) {
+  if (!cache[path]) cache[path] = fetch(path).then((r) => { if (!r.ok) throw new Error(r.status); return r.json(); });
+  return cache[path];
 }
 function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
-function setNav(prev, next, title) {
-  const p = document.getElementById('prev'), n = document.getElementById('next');
-  for (const [a, num] of [[p, prev], [n, next]]) {
-    if (num) { a.href = '#ep-' + num; a.removeAttribute('aria-disabled'); } else { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); }
+const epFile = (s, n) => s.base + 'ep' + String(n).padStart(2, '0') + '.json';
+const epHash = (s, n) => '#' + s.slug + '-ep-' + n;
+const lastKey = (s) => 'last-ep:' + s.slug;
+function getLast(s) { try { return Number(localStorage.getItem(lastKey(s))) || 0; } catch (e) { return 0; } }
+function setLast(s, n) { try { localStorage.setItem(lastKey(s), String(n)); } catch (e) { /* storage blocked: nothing to remember */ } }
+async function loadSeries(s) { if (!seriesIndex[s.slug]) seriesIndex[s.slug] = await getJson(s.base + 'index.json'); return seriesIndex[s.slug]; }
+
+// One-tap episode picker: a native list of every episode of the current series.
+function fillPicker(sel, s, episodes, current) {
+  sel.replaceChildren();
+  if (!current) { const o = el('option', null, 'เลือกตอน (' + episodes.length + ' ตอน)'); o.value = ''; o.disabled = true; o.selected = true; sel.append(o); }
+  for (const ep of episodes) {
+    const o = el('option', null, 'ตอนที่ ' + ep.number + ' · ' + ep.title);
+    o.value = String(ep.number);
+    if (ep.number === current) o.selected = true;
+    sel.append(o);
   }
-  p.hidden = n.hidden = !title;
-  document.getElementById('bar-title').textContent = title || '';
+  sel.onchange = () => { if (sel.value) location.hash = epHash(s, Number(sel.value)); };
 }
 
-function renderHome() {
+function setBar(mode, s, episodes, current, prev, next, title) {
+  const p = document.getElementById('prev'), n = document.getElementById('next'), pw = document.getElementById('pick-wrap'), t = document.getElementById('bar-title');
+  const reading = mode === 'episode', series = mode === 'series';
+  p.hidden = n.hidden = !reading;
+  pw.hidden = !(reading || series);
+  t.hidden = reading || series;
+  t.textContent = title || '';
+  if (reading || series) fillPicker(document.getElementById('ep-pick'), s, episodes, current);
+  for (const [a, num] of [[p, prev], [n, next]]) {
+    if (num) { a.href = epHash(s, num); a.removeAttribute('aria-disabled'); } else { a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true'); }
+  }
+}
+
+function coverBox(svg, alt) { const c = el('div', 'cover'); if (svg) { const img = el('img'); img.src = svgUrl(svg); img.alt = alt; c.append(img); } return c; }
+
+function renderLibrary() {
   freeUrls();
-  const { series, episodes } = index;
-  document.title = series.title;
-  setNav(null, null, '');
+  document.title = 'คลังเว็บตูน';
+  setBar('library', null, [], 0, null, null, '');
+  const wrap = el('div', 'wrap');
+  const head = el('section', 'shelf-head');
+  head.append(el('h1', null, 'คลังเว็บตูน'), el('p', null, 'ฉบับอ่านอย่างเดียว · ' + library.series.length + ' เรื่อง · แตะปกเพื่อเลือกเรื่อง'));
+  const shelf = el('ul', 'shelf');
+  for (const s of library.series) {
+    const li = el('li'), a = el('a', 'book'); a.href = '#' + s.slug;
+    const meta = el('div', 'bm');
+    const latest = el('span'); latest.append('ล่าสุด '); latest.append(el('b', null, 'ตอนที่ ' + s.latest));
+    meta.append(el('span', null, s.episodes + ' ตอน'), latest);
+    const last = getLast(s);
+    const kids = [coverBox(s.cover, 'ภาพปก ' + s.title), el('div', 'bt', s.title)];
+    if (s.tagline) kids.push(el('div', 'bm', s.tagline));
+    kids.push(meta);
+    if (last) kids.push(el('span', 'badge', 'อ่านถึงตอนที่ ' + last));
+    a.append(...kids);
+    li.append(a); shelf.append(li);
+  }
+  wrap.append(head, shelf);
+  app.replaceChildren(wrap);
+}
+
+async function renderSeries(s) {
+  app.replaceChildren(el('div', 'loading', 'กำลังโหลด ' + s.title + '…'));
+  const idx = await loadSeries(s);
+  freeUrls();
+  const { series, episodes } = idx;
+  document.title = series.title + ' · คลังเว็บตูน';
+  setBar('series', s, episodes, 0, null, null, '');
   const wrap = el('div', 'wrap');
   const hero = el('section', 'hero');
-  const cover = el('div', 'cover');
-  if (series.cover) { const img = el('img'); img.src = svgUrl(series.cover); img.alt = 'ภาพปก ' + series.title; cover.append(img); }
   const info = el('div');
-  const h1 = el('h1'); h1.innerHTML = 'RESET<span>: 00:10</span>';
+  const h1 = el('h1', 'series');
+  const m = series.title.match(/^(.*?)(:.*)$/);
+  if (m) { h1.append(m[1]); h1.append(el('span', null, m[2])); } else h1.textContent = series.title;
   const actions = el('div', 'actions');
-  const first = el('a', 'btn primary', 'อ่านตอนแรก'); first.href = '#ep-1';
-  const last = episodes[episodes.length - 1];
-  const latest = el('a', 'btn', 'ตอนล่าสุด: ตอนที่ ' + last.number); latest.href = '#ep-' + last.number;
-  actions.append(first, latest);
-  info.append(h1, el('p', 'tagline', series.tagline), el('p', 'synopsis', series.synopsis), actions,
-    el('p', 'note', 'ฉบับอ่านอย่างเดียว · ดัดแปลงจากต้นฉบับนิยาย บทที่ 1–' + episodes.length + ' · ' + episodes.reduce((a, e) => a + e.panels, 0) + ' ช่อง'));
-  hero.append(cover, info);
-  const head = el('div', 'list-head'); head.append(el('h2', null, 'ตอนที่มีให้อ่าน'), el('span', 'count', episodes.length + ' ตอน'));
+  const first = el('a', 'btn' + (getLast(s) ? '' : ' primary'), 'อ่านตอนแรก'); first.href = epHash(s, episodes[0].number);
+  actions.append(first);
+  const last = getLast(s);
+  if (last && episodes.some((e) => e.number === last)) { const c = el('a', 'btn primary', 'อ่านต่อ ตอนที่ ' + last); c.href = epHash(s, last); actions.prepend(c); }
+  const latestEp = episodes[episodes.length - 1];
+  const latest = el('a', 'btn', 'ตอนล่าสุด: ตอนที่ ' + latestEp.number); latest.href = epHash(s, latestEp.number);
+  actions.append(latest);
+  const jump = el('div', 'jump');
+  const lab = el('label', null, 'กระโดดไปตอนที่ต้องการ'); lab.htmlFor = 'ep-jump';
+  const sel = el('select'); sel.id = 'ep-jump';
+  const pw = el('div', 'pick'); pw.append(sel);
+  fillPicker(sel, s, episodes, 0);
+  jump.append(lab, pw);
+  info.append(h1, el('p', 'tagline', series.tagline), el('p', 'synopsis', series.synopsis), actions, jump,
+    el('p', 'note', 'ฉบับอ่านอย่างเดียว · ' + episodes.length + ' ตอน · ' + episodes.reduce((a, e) => a + e.panels, 0).toLocaleString('th-TH') + ' ช่อง'));
+  hero.append(coverBox(series.cover, 'ภาพปก ' + series.title), info);
+  const head = el('div', 'list-head'); head.append(el('h2', null, 'ตอนทั้งหมด'), el('span', 'count', 'ใหม่สุดอยู่บน'));
   const list = el('ol', 'eps');
   for (const ep of [...episodes].reverse()) {
-    const li = el('li'), a = el('a'); a.href = '#ep-' + ep.number;
+    const li = el('li'), a = el('a'); a.href = epHash(s, ep.number);
     const th = el('div', 'thumb');
     if (ep.thumb) { const img = el('img'); img.src = svgUrl(ep.thumb); img.alt = ''; img.loading = 'lazy'; th.append(img); }
     const txt = el('div'); txt.append(el('div', 'no', 'ตอนที่ ' + ep.number), el('div', 'et', ep.title), el('div', 'es', ep.subtitle));
@@ -157,6 +247,7 @@ function renderHome() {
   }
   wrap.append(hero, head, list);
   app.replaceChildren(wrap);
+  window.scrollTo(0, 0);
 }
 
 function bubble(b) {
@@ -170,18 +261,22 @@ function bubble(b) {
   return d;
 }
 
-async function renderEpisode(n) {
+async function renderEpisode(s, n) {
   app.replaceChildren(el('div', 'loading', 'กำลังโหลดตอนที่ ' + n + '…'));
-  const meta = index.episodes.find((e) => e.number === n);
-  if (!meta) { app.replaceChildren(el('div', 'loading', 'ไม่พบตอนนี้')); setNav(null, null, 'ไม่พบตอน'); return; }
-  const ep = await getJson('ep' + String(n).padStart(2, '0') + '.json');
+  const idx = await loadSeries(s);
+  const episodes = idx.episodes;
+  const meta = episodes.find((e) => e.number === n);
+  if (!meta) { app.replaceChildren(el('div', 'loading', 'ไม่พบตอนที่ ' + n + ' ในเรื่องนี้')); setBar('series', s, episodes, 0, null, null, ''); return; }
+  const ep = await getJson(epFile(s, n));
   freeUrls();
-  const nums = index.episodes.map((e) => e.number), i = nums.indexOf(n);
+  const nums = episodes.map((e) => e.number), i = nums.indexOf(n);
   const prev = nums[i - 1], next = nums[i + 1];
-  document.title = 'ตอนที่ ' + n + ' ' + ep.title + ' · RESET: 00:10';
-  setNav(prev, next, 'ตอนที่ ' + n + ' · ' + ep.title);
+  document.title = 'ตอนที่ ' + n + ' ' + ep.title + ' · ' + idx.series.title;
+  setBar('episode', s, episodes, n, prev, next, '');
+  setLast(s, n);
   const head = el('header', 'ep-head');
-  head.append(el('div', 'no', 'ตอนที่ ' + n), el('h2', null, ep.title), el('div', 'sub', ep.subtitle));
+  const back = el('a', 'no', idx.series.title); back.href = '#' + s.slug;
+  head.append(back, el('div', 'no', 'ตอนที่ ' + n), el('h2', null, ep.title), el('div', 'sub', ep.subtitle));
   const strip = el('div', 'strip');
   ep.panels.forEach((p, k) => {
     if (k > 0 && p.gap) { const g = el('div', 'gap'); g.style.height = p.gap + 'px'; strip.append(g); }
@@ -195,27 +290,34 @@ async function renderEpisode(n) {
   const end = el('footer', 'ep-end');
   end.append(el('div', null, next ? 'จบตอนที่ ' + n : 'จบตอนที่ ' + n + ' — ตอนล่าสุดที่มีให้อ่าน'));
   const acts = el('div', 'actions');
-  const a1 = el('a', 'btn', '‹ ตอนก่อนหน้า'); if (prev) a1.href = '#ep-' + prev; else a1.setAttribute('aria-disabled', 'true');
-  const a2 = el('a', 'btn', 'รายการตอน'); a2.href = '#';
-  const a3 = el('a', 'btn primary', 'ตอนถัดไป ›'); if (next) a3.href = '#ep-' + next; else a3.setAttribute('aria-disabled', 'true');
+  const a1 = el('a', 'btn', '‹ ตอนก่อนหน้า'); if (prev) a1.href = epHash(s, prev); else a1.setAttribute('aria-disabled', 'true');
+  const a2 = el('a', 'btn', 'รายการตอน'); a2.href = '#' + s.slug;
+  const a3 = el('a', 'btn primary', 'ตอนถัดไป ›'); if (next) a3.href = epHash(s, next); else a3.setAttribute('aria-disabled', 'true');
   acts.append(a1, a2, a3); end.append(acts);
   app.replaceChildren(head, strip, end);
   window.scrollTo(0, 0);
-  if (next) getJson('ep' + String(next).padStart(2, '0') + '.json').catch(() => {});
+  if (next) getJson(epFile(s, next)).catch(() => {});
 }
 
 async function route() {
   try {
-    if (!index) index = await getJson('index.json');
-    const m = location.hash.match(/^#ep-(\d+)$/);
-    if (m) await renderEpisode(Number(m[1])); else renderHome();
+    if (!library) library = await getJson('data/library.json');
+    const h = location.hash.slice(1);
+    const legacy = h.match(/^ep-(\d+)$/);
+    if (legacy) { location.replace(epHash(library.series[0], Number(legacy[1]))); return; }
+    for (const s of library.series) {
+      if (h === s.slug) return renderSeries(s);
+      const m = h.match(/^(.+)-ep-(\d+)$/);
+      if (m && m[1] === s.slug) return renderEpisode(s, Number(m[2]));
+    }
+    renderLibrary();
   } catch (e) {
     app.replaceChildren(el('div', 'loading', 'โหลดข้อมูลไม่สำเร็จ ลองรีเฟรชหน้าอีกครั้ง'));
   }
 }
 addEventListener('hashchange', route);
 addEventListener('keydown', (e) => {
-  if (!/^#ep-/.test(location.hash)) return;
+  if (!/-ep-\d+$/.test(location.hash) || e.target.closest('select')) return;
   const id = e.key === 'ArrowLeft' ? 'prev' : e.key === 'ArrowRight' ? 'next' : null;
   const a = id && document.getElementById(id);
   if (a && a.getAttribute('href')) location.hash = a.getAttribute('href');

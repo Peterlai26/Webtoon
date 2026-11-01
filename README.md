@@ -48,3 +48,8 @@ BASE=http://localhost:3000 ADMIN_PASSWORD=... node scripts/e2e-check.js   # E2E 
 - ความลับทั้งหมดผ่าน environment variables (`.env` ไม่ถูก commit)
 - รหัสผ่าน scrypt, session cookie HttpOnly + SameSite=Strict (+Secure เมื่อ `SECURE_COOKIES=true`), CSRF token สำหรับทุกคำขอที่แก้ไขข้อมูล, จำกัดการล็อกอินผิด 10 ครั้ง/15 นาที
 - สำหรับ production ให้รันหลัง reverse proxy ที่มี HTTPS และสำรองโฟลเดอร์ `data/` + `storage/`
+
+## ลิงก์อ่านอย่างเดียว (คลังเว็บตูนหลายเรื่อง)
+`node scripts/export-static.js <out> [--slug reset-0010] [--base data/]` ส่งออกเรื่องจากฐานข้อมูลเป็นเว็บอ่านแบบ static:
+หน้าหลักเป็นชั้นหนังสือรวมทุกเรื่อง (`data/library.json`), หน้าเรื่องมีปุ่มเลือกตอน (รายการตอนทั้งหมดในการกดครั้งเดียว) และแถบด้านบนของหน้าอ่านก็มีปุ่มเลือกตอนเช่นกัน
+เพิ่มเรื่องใหม่: ส่งออกจากฐานข้อมูลของเรื่องนั้นลงโฟลเดอร์เดียวกัน ด้วย `--slug ชื่อเรื่อง --base data/ชื่อเรื่อง/` — รายการใน `library.json` จะถูกเพิ่ม/แทนที่ โดยเรื่องเดิมยังอยู่ ลิงก์เก่าแบบ `#ep-12` ยังเปิดได้
