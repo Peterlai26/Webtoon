@@ -9,7 +9,9 @@ const names = ['rey', 'lucas', 'sera', 'lilith', 'knell', 'latch', 'suture', 'as
   // EP31-45
   'olden', 'miray', 'sanctum', 'corvin', 'bastian', 'axiom', 'draken', 'voss', 'arion', 'chronos', 'gravis', 'nal', 'whiteMask', 'velen', 'naira', 'oneface', 'regulus', 'warden', 'ledger', 'grimmFace', 'whiteDragon', 'lightHound', 'quadMech', 'carrow', 'crimsonJaw',
   // EP46-65
-  'kinesis', 'rail', 'valkor', 'sadis', 'gargoyle', 'vesper', 'centurion', 'voltage', 'mono', 'sunDragon'];
+  'kinesis', 'rail', 'valkor', 'sadis', 'gargoyle', 'vesper', 'centurion', 'voltage', 'mono', 'sunDragon',
+  // EP66-70
+  'kira', 'zahira', 'serkal', 'solon', 'haran', 'tikky', 'koko', 'sandGuard', 'sandShark', 'stoneWorm', 'ironBeetle'];
 const H = {};
 for (const n of names) H[n] = C(n);
 H.fx = (name, o = {}) => ({ fx: name, ...o });

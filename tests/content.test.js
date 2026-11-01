@@ -1,5 +1,5 @@
 'use strict';
-// Content QA: scope (EP1-65 only), source references, no Thai text inside the
+// Content QA: scope (EP1-70 only), source references, no Thai text inside the
 // artwork, the normalised names/numbers, and continuity rules.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
@@ -9,10 +9,10 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const SB = path.join(ROOT, 'content', 'storyboards');
 const OUT = path.join(ROOT, 'art', 'out');
-const eps = Array.from({ length: 65 }, (_, i) => require(path.join(SB, `ep${String(i + 1).padStart(2, '0')}.js`)));
+const eps = Array.from({ length: 70 }, (_, i) => require(path.join(SB, `ep${String(i + 1).padStart(2, '0')}.js`)));
 const THAI = /[฀-๿]/;
 
-test('exactly episodes 1-65 exist, numbered in order, no EP66+', () => {
+test('exactly episodes 1-70 exist, numbered in order, no EP71+', () => {
   const files = fs.readdirSync(SB).filter((f) => /^ep\d+\.js$/.test(f)).sort();
   assert.deepEqual(files, eps.map((_, i) => `ep${String(i + 1).padStart(2, '0')}.js`));
   eps.forEach((ep, i) => {
@@ -72,7 +72,8 @@ test('characters only appear from the episode they are introduced in the source'
     carrow: 31, crimsonJaw: 33, miray: 35, olden: 36, corvin: 37, sanctum: 37, axiom: 37, bastian: 37, draken: 38, whiteDragon: 38, voss: 38,
     whiteMask: 39, arion: 39, chronos: 39, gravis: 39, nal: 40, naira: 41, velen: 41, lightHound: 42, quadMech: 43, oneface: 44,
     regulus: 45, warden: 45, ledger: 45, grimmFace: 45,
-    mono: 49, kinesis: 50, rail: 50, valkor: 50, sadis: 50, gargoyle: 50, vesper: 50, centurion: 50, voltage: 50, sunDragon: 63 };
+    mono: 49, kinesis: 50, rail: 50, valkor: 50, sadis: 50, gargoyle: 50, vesper: 50, centurion: 50, voltage: 50, sunDragon: 63,
+    sandShark: 67, stoneWorm: 67, zahira: 68, serkal: 68, solon: 68, sandGuard: 68, kira: 69, haran: 69, tikky: 69, koko: 69, ironBeetle: 70 };
   for (const ep of eps) for (const p of ep.panels) for (const l of p.L || []) {
     if (l.c && firstEp[l.c]) assert.ok(ep.number >= firstEp[l.c], `${l.c} appears in EP${ep.number} before introduction`);
   }
@@ -133,4 +134,19 @@ test('EP46-65 continuity: Grimm dies in EP58, Velen in EP61; the lieutenants sta
   }
   // Rey has no time-rewind (author's ruling on ch.59 L195-217): his power is the ten-second body reset only
   for (const ep of eps.filter((e) => e.number >= 46)) for (const p of ep.panels) for (const t of [p.n, ...(p.T || []).map((x) => x.t)]) assert.ok(!/ย้อนเวลา|ย้อนกลับไปสิบวินาที|ดีดย้อน|เวลาย้อน/.test(t), `EP${ep.number} ${p.src}: Rey cannot rewind time`);
+});
+
+test('EP66-70 continuity: the fallen of Arc 6 stay gone, Rey carries Grimm\'s mace, no beetle is killed, Kira is only a shimmer before EP69', () => {
+  const dead = ['grimm', 'grimmFace', 'velen', 'naira', 'regulus', 'mono', 'warden', 'sera', 'oneface', 'draken', 'sunDragon', 'whiteDragon'];
+  for (const ep of eps.filter((e) => e.number >= 66)) for (const p of ep.panels) for (const l of p.L || []) {
+    assert.ok(!dead.includes(l.c), `EP${ep.number} ${p.src}: ${l.c} died in Arc 6`);
+    if (l.c === 'ironBeetle') assert.ok(!['dead', 'lie'].includes(l.pose) && !l.dead, `EP${ep.number} ${p.src}: the beetles are herded, not killed`);
+  }
+  // Rey: torn white jacket again (ch.66 L15) with the mace strapped on the back (ch.66 L19)
+  for (const ep of eps.filter((e) => e.number >= 66)) {
+    assert.ok(ep.defaults && ep.defaults.rey && ep.defaults.rey.backMace && !ep.defaults.rey.outfit, `EP${ep.number} Rey's arc-7 outfit`);
+  }
+  // Rey has no time-rewind: the finger-cut demo (ch.68 L117) must not say "ย้อนเวลา"
+  const ep68 = eps[67];
+  assert.ok(ep68.panels.some((p) => /L115-117/.test(p.src) && (p.L || []).some((l) => l.fx === 'reset')));
 });

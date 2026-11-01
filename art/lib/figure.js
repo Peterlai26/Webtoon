@@ -597,6 +597,8 @@ function figure(spec) {
   if (def.sack) parts.push(g(ellipse(-D.sw * 0.5, -L * 0.6, 34, 46, { fill: '#8a7a5a', stroke: INK, strokeWidth: 3 }) + path(`M${-D.sw * 0.5 - 10},${-L * 0.6 - 40} l-8,-30 l14,4 M${-D.sw * 0.5 + 10},${-L * 0.6 - 40} l12,-24`, { stroke: INK, strokeWidth: 3, fill: '#b9bcc4' }), { transform: torsoT }));
   if (def.under) parts.push(g(def.under(L, D, st, si), { transform: torsoT }));
   if (st.backSword) parts.push(g(g(prop('sheathed'), { transform: `translate(${f(D.sw * 0.62)},${f(-L - 74)}) rotate(118) scale(1.6)` }), { transform: torsoT }));
+  // EP66+: Grimm's soul-nailing mace strapped across the back next to the sword (ch.66 L19)
+  if (st.backMace) parts.push(g(g(prop('mace'), { transform: `translate(${f(-D.sw * 0.62)},${f(-L - 60)}) rotate(-120) scale(1.3)` }), { transform: torsoT }));
   if (def.pauldrons) parts.push(g(pauldronFor(def, L, D, st, false, si), { transform: torsoT }));
   parts.push(drawArm(def, D, st, j, 'F', far, propFor('f'), detTo('f')));
   parts.push(drawLeg(def, D, st, j, 'F', far));
@@ -608,7 +610,9 @@ function figure(spec) {
   parts.push(g(g(def.torso(L, D, st, si, def.skin), { clipPath: `url(#${clip})` }) + path(torsoShape(D), { fill: 'none', stroke: INK, strokeWidth: 3.2, strokeLinejoin: 'round' }) + (def.over ? def.over(L, D, st, si) : '') + (def.belt ? def.belt(D, L) : ''), { transform: torsoT }));
   if (sk && sk.front) parts.push(g(skirt(D, sk), { transform: torsoT }));
   if (def.threads) parts.push(g(threadRings(D, L), { transform: torsoT }));
-  parts.push(g(H.head + (st.headlamp ? headlamp() : ''), { transform: headT }));
+  parts.push(g(H.head + (st.headlamp ? headlamp() : '') + (st.wrap ? headWrap(st.wrap) : ''), { transform: headT }));
+  // EP66+: Grimm's cracked half skull-mask tied at the left hip (ch.66 L231)
+  if (st.hipMask) parts.push(g(g(prop('skullMask', { half: true }), { transform: `translate(${f(-D.hw * 0.55)},-6) scale(0.7)` }), { transform: torsoT }));
   if (detTo('n') || detTo('f')) {
     const k = detTo('n') ? 'N' : 'F';
     const s0 = j['sh' + k], s1 = det.to;
@@ -683,6 +687,12 @@ function headlamp() {
   return path('M-42,-26 Q0,-44 44,-30', { stroke: '#2a2a30', strokeWidth: 6, fill: 'none' }) + rect(26, -44, 18, 14, { fill: '#5a5a62', stroke: INK, strokeWidth: 2 }) + circle(44, -37, 5, { fill: '#fffbd0' });
 }
 
+// EP66-67: a strip of pale spare cloth wound round the head against the desert sun (ch.66 L251)
+function headWrap(col) {
+  const c = typeof col === 'string' ? col : '#e8dcc4';
+  return path('M-48,-18 C-50,-74 50,-78 52,-20 L50,-6 C20,-16 -20,-16 -48,-6Z', { fill: c, stroke: INK, strokeWidth: 3 }) + path('M-40,-30 Q0,-44 44,-32 M-46,-14 Q0,-26 50,-16', { stroke: '#b8a888', strokeWidth: 2, fill: 'none' }) + circle(-44,-12,7,{ fill: '#cbbd9e', stroke: INK, strokeWidth: 2 }) + path('M-48,-8 L-62,22 L-50,20 L-44,-2Z', { fill: '#d8c8a8', stroke: INK, strokeWidth: 2 });
+}
+
 function razeBlade(D, L, rightNear, st) {
   if (st.bladeDrawn) return '';
   const x = rightNear ? D.sw * 0.36 : -D.sw * 0.36, dir = rightNear ? 1 : -1;
@@ -693,6 +703,7 @@ Object.assign(CHARS, require('./cast2')({ SK, OL, coatTorso, plainTorso, armourT
 Object.assign(CHARS, require('./cast3')({ SK, OL, purifierHelmet }));
 Object.assign(CHARS, require('./cast4')({ SK, OL, coatTorso, purifierHelmet, CHARS }));
 Object.assign(CHARS, require('./cast5')({ CHARS }));
-const C2 = { ...require('./creature2'), ...require('./creature3'), ...require('./creature4'), ...require('./creature5') };
+Object.assign(CHARS, require('./cast6')({ HAIR: require('./head').HAIR }));
+const C2 = { ...require('./creature2'), ...require('./creature3'), ...require('./creature4'), ...require('./creature5'), ...require('./creature6') };
 
 module.exports = { figure, CHARS, sideInfo, META };

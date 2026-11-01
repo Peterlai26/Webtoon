@@ -267,6 +267,7 @@ Object.assign(PROPS, {
 });
 
 Object.assign(PROPS, require('./props5')(PROPS));
+Object.assign(PROPS, require('./props6')());
 
 function prop(name, o) {
   const fn = PROPS[name];
