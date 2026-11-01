@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 // Browser end-to-end check against a running server (uses Playwright).
-// Usage: BASE=http://localhost:3000 ADMIN_USERNAME=admin ADMIN_PASSWORD=... [EPISODES=30] node scripts/e2e-check.js
+// Usage: BASE=http://localhost:3000 ADMIN_USERNAME=admin ADMIN_PASSWORD=... [EPISODES=45] node scripts/e2e-check.js
 // Note: this edits EP1 panel 3's first bubble text and adds/removes a panel.
 'use strict';
 const { chromium } = require('playwright');
 const path = require('path');
 const B = process.env.BASE || 'http://localhost:3000';
-const EPS = Number(process.env.EPISODES || 30); // number of published episodes expected
+const EPS = Number(process.env.EPISODES || 45); // number of published episodes expected
 const SHOTS = process.env.SHOTS || '';
 const shot = (p, name) => (SHOTS ? p.screenshot({ path: path.join(SHOTS, name) }) : null);
 

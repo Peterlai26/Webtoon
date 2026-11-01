@@ -586,7 +586,7 @@ function figure(spec) {
   const L = D.torso;
   const torsoT = `translate(${f(j.hip[0])},${f(j.hip[1])}) rotate(${f(rig.T + 90)})`;
   const headT = `translate(${f(j.head[0])},${f(j.head[1])}) rotate(${f(rig.headAng + 90)}) scale(${D.headR / 44})`;
-  const H = head(st.hair ? { ...def.head, hair: st.hair } : def.head, spec.expr, si.front ? 'front' : 'side', { ...st, coverFar: near === 'right', ...(spec.exprOverride ? { exprOverride: spec.exprOverride } : {}), ...(spec.lipBlood ? { lipBlood: true } : {}) });
+  const H = head(def.headFor ? def.headFor(st) : st.hair ? { ...def.head, hair: st.hair } : def.head, spec.expr, si.front ? 'front' : 'side', { ...st, coverFar: near === 'right', ...(spec.exprOverride ? { exprOverride: spec.exprOverride } : {}), ...(spec.lipBlood ? { lipBlood: true } : {}) });
 
   const clip = id('tc');
   const parts = [];
@@ -691,6 +691,7 @@ function razeBlade(D, L, rightNear, st) {
 
 Object.assign(CHARS, require('./cast2')({ SK, OL, coatTorso, plainTorso, armourTorso, leatherCoatTorso }));
 Object.assign(CHARS, require('./cast3')({ SK, OL, purifierHelmet }));
-const C2 = { ...require('./creature2'), ...require('./creature3') };
+Object.assign(CHARS, require('./cast4')({ SK, OL, coatTorso, purifierHelmet, CHARS }));
+const C2 = { ...require('./creature2'), ...require('./creature3'), ...require('./creature4') };
 
 module.exports = { figure, CHARS, sideInfo, META };

@@ -32,4 +32,11 @@ const REY_EP24 = { ...REY_EP23, torn: true, scorched: true, blood: true };
 const REY_EP26 = { outfit: 'coat', inner: 'shirt' };
 const REY_EP30 = { outfit: 'coat', inner: 'jacket' };
 
-module.exports = { REY_EP23, REY_EP24, REY_EP26, REY_EP30, JACKET_EP1, JACKET_EP2, JACKET_EP4, JACKET_EP7, JACKET_EP10, REY_EP11, REY_EP16, REY_EP18, REY_EP19 };
+// EP31: disguise — black velvet suit, slicked hair, tinted round glasses (ch.31 L24-26)
+const REY_EP31 = { outfit: 'suit', hair: 'reySlick', shades: true };
+// EP32-34: same suit once the disguise is dropped (ch.31 L336-338); hair back to its usual spikes
+const REY_EP32 = { outfit: 'suit', hair: 'rey', shades: false };
+// EP35 onwards: suit shredded by Arachne's threads and stained with blood (ch.35 L82, ch.36 L184, ch.37 L16)
+const REY_EP35 = { outfit: 'suit', hair: 'rey', shades: false, blood: true };
+
+module.exports = { REY_EP31, REY_EP32, REY_EP35, REY_EP23, REY_EP24, REY_EP26, REY_EP30, JACKET_EP1, JACKET_EP2, JACKET_EP4, JACKET_EP7, JACKET_EP10, REY_EP11, REY_EP16, REY_EP18, REY_EP19 };

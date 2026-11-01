@@ -33,7 +33,8 @@ fs.writeFileSync(path.join(OUT, 'cover.svg'), cover.svg);
 
 // ---------- episode thumbnails: a square re-render of a key panel ----------
 const KEY = { 1: 23, 2: 13, 3: 26, 4: 31, 5: 46, 6: 33, 7: 13, 8: 18, 9: 18, 10: 12, 11: 31, 12: 7, 13: 19, 14: 16, 15: 24, 16: 7, 17: 17, 18: 20, 19: 24, 20: 17,
-  21: 34, 22: 23, 23: 33, 24: 46, 25: 34, 26: 37, 27: 30, 28: 22, 29: 30, 30: 39 };
+  21: 34, 22: 23, 23: 33, 24: 46, 25: 34, 26: 37, 27: 30, 28: 22, 29: 30, 30: 39,
+  31: 38, 32: 16, 33: 13, 34: 27, 35: 12, 36: 17, 37: 7, 38: 8, 39: 16, 40: 2, 41: 5, 42: 14, 43: 12, 44: 17, 45: 18 };
 for (const [n, idx] of Object.entries(KEY)) {
   const ep = require(`../content/storyboards/ep${String(n).padStart(2, '0')}.js`);
   const p = ep.panels[Math.min(idx, ep.panels.length) - 1];
@@ -183,4 +184,47 @@ sheet('creatures-3', 'สิ่งมีชีวิต EP23–30', [
   { c: 'nox', x: 1060, y: 640, s: 0.7, grown: 1, label: undefined },
   { c: 'nox', x: 1300, y: 660, s: 0.7, grown: 2, sigil: true, label: undefined },
 ], ['น็อกซ์: EP23 ขนาดสุนัขป่าหนุ่ม (กลาง) / EP25 สูงระดับเอว เขายาว + ตราพันธะของเรย์ (ขวา)'], 900);
+// ---------- EP31-45 ----------
+sheet('rey-costume-4', 'เรย์และทีม — ชุดปลอมตัว EP31 / สูทขาด EP35–45', [
+  { c: 'rey', x: 140, y: 840, s: 0.82, pose: 'stand', expr: 'smirk', st: { ...C.REY_EP31 }, label: 'EP31 คุณชายเหมืองลึก' },
+  { c: 'rey', x: 380, y: 840, s: 0.82, pose: 'chestHand', expr: 'determined', st: { ...C.REY_EP35 }, props: { f: { n: 'sword', a: 95, len: 240, ember: true } }, label: 'EP35–45 สูทขาด หัวใจเหล็กในอกซ้าย' },
+  { c: 'gula', x: 620, y: 840, s: 0.82, pose: 'stand', expr: 'smile', st: { dress: true }, label: 'กูล่า คุณหนู' },
+  { c: 'claire', x: 800, y: 840, s: 0.82, pose: 'stand', expr: 'cold', st: { suit: true }, label: 'แคลร์ เลขาฯ' },
+  { c: 'volt', x: 980, y: 840, s: 0.82, pose: 'stand', expr: 'grin', st: { tux: true }, label: 'โวลต์ พ่อบ้าน' },
+  { c: 'grimm', x: 1180, y: 840, s: 0.82, pose: 'stand', expr: 'neutral', st: { silverMask: true }, label: 'กริมม์ หน้ากากเงิน' },
+  { c: 'grimmFace', x: 1420, y: 840, s: 0.82, pose: 'stand', expr: 'calm', face: 'front', label: 'กริมม์ ไม่สวมหน้ากาก (EP45)' },
+], []);
+sheet('solaris', 'โซลาริส — ผู้บังคับบัญชาและผู้ทรงเกียรติยศอักษร (EP35–41)', [
+  { c: 'olden', x: 90, y: 840, s: 0.62, pose: 'stand', expr: 'cold', props: { f: { n: 'greatsword', a: 80 } }, label: 'โอลเดน' },
+  { c: 'miray', x: 220, y: 840, s: 0.62, pose: 'stand', expr: 'smile', label: 'มิเรย์ (T)' },
+  { c: 'sanctum', x: 360, y: 840, s: 0.6, pose: 'stand', expr: 'cold', label: 'แซงก์ทัม' },
+  { c: 'corvin', x: 490, y: 840, s: 0.6, pose: 'stand', expr: 'smirk', label: 'คอร์วิน (H)' },
+  { c: 'bastian', x: 610, y: 840, s: 0.6, pose: 'stand', expr: 'grin', label: 'บาสเตียน' },
+  { c: 'axiom', x: 720, y: 840, s: 0.62, pose: 'stand', expr: 'sly', props: { n: 'starWand' }, label: 'แอกเซียม' },
+  { c: 'draken', x: 850, y: 840, s: 0.6, pose: 'stand', expr: 'cold', props: { n: { n: 'dragonLance', a: -80 } }, label: 'ดราเกน (D)' },
+  { c: 'voss', x: 980, y: 840, s: 0.6, pose: 'stand', expr: 'calm', label: 'วอสส์ (V)' },
+  { c: 'arion', x: 1100, y: 840, s: 0.6, pose: 'stand', expr: 'cold', props: { f: 'lightBow' }, label: 'อาริออน' },
+  { c: 'chronos', x: 1220, y: 840, s: 0.6, pose: 'stand', expr: 'cold', props: { n: 'pocketWatch' }, label: 'โครนอส (C)' },
+  { c: 'gravis', x: 1340, y: 840, s: 0.6, pose: 'stand', expr: 'cold', label: 'กราวิส (G)' },
+  { c: 'nal', x: 1480, y: 840, s: 0.6, pose: 'stand', expr: 'cold', props: { n: { n: 'archStaff', a: -80 } }, label: 'นัล (N)' },
+], ['ลูคัสได้รับแต่งตั้งเป็นอักษรแอลใน EP37 — ใช้แบบเดิม'], 900);
+sheet('oneface', 'อาณาจักรหน้าเดียวและผู้ช่วยเหลือ (EP39–45)', [
+  { c: 'whiteMask', x: 90, y: 840, s: 0.6, pose: 'stand', expr: 'neutral', st: { cloak: true, hood: true }, label: 'ผู้มาเยือนในผ้าคลุม' },
+  { c: 'whiteMask', x: 220, y: 840, s: 0.6, pose: 'stand', expr: 'neutral', st: { pat: 'line' }, label: 'ลายเส้นตั้ง' },
+  { c: 'whiteMask', x: 340, y: 840, s: 0.6, pose: 'stand', expr: 'neutral', st: { pat: 'circle' }, label: 'ลายวงกลม' },
+  { c: 'velen', x: 480, y: 840, s: 0.62, pose: 'stand', expr: 'calm', label: 'เวเลน ธอร์น' },
+  { c: 'naira', x: 610, y: 840, s: 0.64, pose: 'stand', expr: 'cold', props: { n: 'knife' }, label: 'ไนร่า (สวมหน้ากาก)' },
+  { c: 'naira', x: 740, y: 840, s: 0.64, pose: 'stand', expr: 'calm', face: 'front', st: { unmasked: true }, label: 'ไนร่า' },
+  { c: 'regulus', x: 880, y: 840, s: 0.62, pose: 'stand', expr: 'calm', face: 'front', label: 'เรกูลัส' },
+  { c: 'warden', x: 1030, y: 840, s: 0.52, pose: 'stand', expr: 'cold', props: { n: { n: 'warSpear', a: -80 } }, label: 'วอร์เดน' },
+  { c: 'ledger', x: 1170, y: 840, s: 0.62, pose: 'stand', expr: 'neutral', props: { n: 'ledgerBook' }, label: 'เลดเจอร์' },
+  { c: 'oneface', x: 1290, y: 840, s: 0.6, pose: 'stand', expr: 'neutral', face: 'front', st: { paint: 'red' }, label: 'ชาวเมือง' },
+  { c: 'oneface', x: 1410, y: 840, s: 0.6, pose: 'stand', expr: 'neutral', face: 'front', st: { paint: 'blue', hair: 'messy' }, label: 'ชาวเมือง' },
+  { c: 'oneface', x: 1520, y: 840, s: 0.6, pose: 'stand', expr: 'neutral', face: 'front', st: { paint: 'silver' }, label: 'ชาวเมือง' },
+], ['ใบหน้าเดียวกันทุกคน — ต่างกันแค่รูปร่าง ทรงผม และการแต่งหน้า'], 900);
+sheet('creatures-4', 'สิ่งมีชีวิต EP31–45', [
+  { c: 'whiteDragon', x: 560, y: 860, s: 0.7, label: 'มังกรขาวของเซอร์ ดราเกน', lx: 500 },
+  { c: 'lightHound', x: 1100, y: 840, s: 0.8, label: 'สุนัขล่าเนื้อเกราะแสง', lx: 1160 },
+  { c: 'quadMech', x: 1420, y: 840, s: 0.7, label: 'หุ่นรบจักรกลแสงสี่ขา', lx: 1430 },
+], [], 900);
 console.log('cover, thumbnails, character sheets rendered');

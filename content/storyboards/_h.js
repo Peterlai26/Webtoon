@@ -5,7 +5,9 @@ const names = ['rey', 'lucas', 'sera', 'lilith', 'knell', 'latch', 'suture', 'as
   // EP11-20
   'bruno', 'cherry', 'mothkid', 'roxy', 'vane', 'cassian', 'arachne', 'gula', 'volt', 'claire', 'grimm', 'rivetKing', 'kier', 'cinder', 'ninebell', 'stranger', 'hostess', 'velvetGuard', 'gambler', 'doll', 'nox', 'snake', 'varan',
   // EP21-30
-  'ilya', 'enforcer', 'mech', 'revS', 'marquis', 'valentine', 'corsetta', 'porcelain', 'silk', 'claireBones', 'rockKing', 'oreBeetle', 'centipede', 'puppet'];
+  'ilya', 'enforcer', 'mech', 'revS', 'marquis', 'valentine', 'corsetta', 'porcelain', 'silk', 'claireBones', 'rockKing', 'oreBeetle', 'centipede', 'puppet',
+  // EP31-45
+  'olden', 'miray', 'sanctum', 'corvin', 'bastian', 'axiom', 'draken', 'voss', 'arion', 'chronos', 'gravis', 'nal', 'whiteMask', 'velen', 'naira', 'oneface', 'regulus', 'warden', 'ledger', 'grimmFace', 'whiteDragon', 'lightHound', 'quadMech', 'carrow', 'crimsonJaw'];
 const H = {};
 for (const n of names) H[n] = C(n);
 H.fx = (name, o = {}) => ({ fx: name, ...o });

@@ -218,6 +218,54 @@ function poly8(cx, cy, r, fill, stroke) {
   return `<polygon points="${pts}" fill="${fill}" stroke="${stroke}" stroke-width="3"/>`;
 }
 
+// ---------- EP31-45 props (added via PROPS so existing ones are untouched) ----------
+Object.assign(PROPS, {
+  greatsword(o = {}) { // Olden's holy-light steel greatsword (ch.36 L30)
+    const len = o.len || 300;
+    return path('M-34,-7 L16,-7 L16,7 L-34,7Z', { fill: '#5a4a2a', ...S }) + path('M16,-26 L28,-26 L28,26 L16,26Z', { fill: '#e2b84a', ...S }) +
+      path(`M28,-16 L${len},-12 L${len + 40},0 L${len},12 L28,16Z`, { fill: '#f2f4f8', ...S }) + path(`M40,0 L${len},0`, { stroke: '#e2b84a', strokeWidth: 3 }) + (o.glow ? path(`M28,0 L${len + 30},0`, { stroke: '#ffe48a', strokeWidth: 30, opacity: 0.3 }) : '');
+  },
+  whipHandle() { return rect(-10, -7, 46, 14, { fill: '#f2eee4', ...S, rx: 5 }) + rect(30, -9, 8, 18, { fill: '#e2b84a', ...S }); },
+  towerShield(o = {}) { // Sanctum's giant shield: concentric gold rings, blue gem at the centre (ch.37 L116)
+    return path('M-20,-150 L120,-150 L120,60 Q50,140 -20,60Z', { fill: '#f1ebdc', ...S }) + [70, 50, 30].map((r) => circle(50, -40, r, { fill: 'none', stroke: '#e2b84a', strokeWidth: 4 })).join('') + circle(50, -40, 14, { fill: '#3aa0ff', stroke: INK, strokeWidth: 2 }) + (o.glow ? circle(50, -40, 60, { fill: '#ffe48a', opacity: 0.35 }) : '');
+  },
+  starWand() { // Axiom's short wand with a star head (ch.37 L146)
+    return rect(-6, -3, 70, 6, { fill: '#16151b', ...S }) + path('M76,-16 L80,-5 L92,-4 L83,3 L86,15 L76,8 L66,15 L69,3 L60,-4 L72,-5Z', { fill: '#ffd45a', ...S });
+  },
+  dragonLance(o = {}) { // Sir Draken's white-silver lance, glowing dragon-fang head (ch.38 L92)
+    const len = o.len || 320;
+    return path(`M-60,-5 L${len},-5 L${len},5 L-60,5Z`, { fill: '#e8eaee', ...S }) + path(`M${len * 0.3},-7 L${len * 0.36},-7 L${len * 0.36},7 L${len * 0.3},7Z`, { fill: '#e2b84a', ...S }) +
+      path(`M${len},-14 C${len + 30},-14 ${len + 60},-6 ${len + 80},0 C${len + 60},6 ${len + 30},14 ${len},14Z`, { fill: '#dff4ff', ...S }) + circle(len + 30, 0, 26, { fill: '#7ad8ff', opacity: 0.35 });
+  },
+  pocketWatch(o = {}) { return circle(14, 0, 14, { fill: '#e2b84a', ...S }) + circle(14, 0, 10, { fill: '#f6f2e4' }) + path('M14,0 L14,-7 M14,0 L19,2', { stroke: INK, strokeWidth: 1.6 }) + rect(10, -18, 8, 5, { fill: '#e2b84a', ...S }); },
+  archStaff() { // Archbishop Nal's golden staff with rotating geometric rings (ch.40 L74)
+    return rect(-60, -4, 300, 8, { fill: '#e2b84a', ...S }) + circle(256, 0, 22, { fill: 'none', stroke: '#e2b84a', strokeWidth: 4 }) + path('M236,-20 L276,20 M236,20 L276,-20', { stroke: '#e2b84a', strokeWidth: 3 }) + circle(256, 0, 34, { fill: 'none', stroke: '#c9a040', strokeWidth: 2, strokeDasharray: '6 6' });
+  },
+  lightBow(o = {}) { // Commander Arion's bow forged from holy light metal (ch.39 L34)
+    return path('M0,-110 C40,-60 40,60 0,110', { stroke: INK, strokeWidth: 12, fill: 'none' }) + path('M0,-110 C40,-60 40,60 0,110', { stroke: '#f2f4f8', strokeWidth: 7, fill: 'none' }) + path('M0,-110 C40,-60 40,60 0,110', { stroke: '#e2b84a', strokeWidth: 2, fill: 'none' }) +
+      path(`M0,-110 L${o.drawn ? -40 : 0},0 L0,110`, { stroke: '#ffe48a', strokeWidth: 2.4, fill: 'none' }) + (o.drawn ? path('M-40,0 L120,0', { stroke: '#ffd45a', strokeWidth: 6 }) + circle(120, 0, 16, { fill: '#ffe48a', opacity: 0.6 }) : '');
+  },
+  ledgerBook() { return rect(-6, -40, 60, 78, { fill: '#4a2a1a', ...S, rx: 4 }) + rect(-2, -36, 6, 70, { fill: '#2a1a10' }) + rect(14, -24, 30, 8, { fill: '#c9a040' }); },
+  knife(o = {}) { // Naira's short knife
+    return rect(-12, -4, 26, 8, { fill: '#121117', ...S, rx: 2 }) + path('M14,-7 L64,-2 L70,0 L64,2 L14,6Z', { fill: '#dfe3ea', ...S }) + (o.blood ? path('M40,-2 L66,0', { stroke: '#c0172a', strokeWidth: 3 }) : '');
+  },
+  warSpear() { // Marshal Warden's long spear with a command banner
+    return rect(-80, -5, 380, 10, { fill: '#2a2a32', ...S }) + path('M300,-12 L350,0 L300,12Z', { fill: '#c9ced8', ...S }) + path('M240,-5 L240,-90 L170,-80 L190,-50 L170,-20 L240,-5Z', { fill: '#7a1420', ...S });
+  },
+  ceremonialSword() { // King Regulus's black-red ceremonial sword
+    return rect(-24, -5, 40, 10, { fill: '#1a1a20', ...S }) + rect(14, -14, 8, 28, { fill: '#7a1420', ...S }) + path('M22,-6 L220,-3 L240,0 L220,3 L22,6Z', { fill: '#121117', ...S }) + path('M30,0 L220,0', { stroke: '#a3101f', strokeWidth: 2 });
+  },
+  dagger(o = {}) { // the white-mask's stretching short blade, at rest
+    return rect(-12, -4, 26, 8, { fill: '#121117', ...S }) + path('M14,-6 L70,-2 L78,0 L70,2 L14,6Z', { fill: '#dfe3ea', ...S });
+  },
+  syringeBig() { return rect(0, -9, 90, 18, { fill: '#9a4ad0', opacity: 0.8, ...S, rx: 4 }) + rect(-20, -3, 22, 6, { fill: '#9aa3b3', ...S }) + path('M90,0 L130,0', { stroke: '#c9ced8', strokeWidth: 3 }); },
+  giantScissors(o = {}) { // Crimson Jaw's two-metre fate-cutting shears; o.broken = blades bitten off
+    const b = o.broken ? 80 : 200;
+    return circle(-10, -14, 16, { fill: 'none', stroke: INK, strokeWidth: 8 }) + circle(-10, 14, 16, { fill: 'none', stroke: INK, strokeWidth: 8 }) + path(`M6,-10 L${b},-28 L${b},-16 L10,4Z`, { fill: '#c9ced8', ...S }) + path(`M6,10 L${b},${o.open ? 50 : 26} L${b},${o.open ? 38 : 14} L10,-4Z`, { fill: '#b9bcc6', ...S }) + circle(10, 0, 6, { fill: '#5a5e66', ...S });
+  },
+  tablet() { return rect(-4, -30, 60, 46, { fill: '#cfe6ff', opacity: 0.5, ...S, rx: 4 }) + rect(4, -22, 30, 4, { fill: '#3fe0d0' }) + rect(4, -14, 40, 3, { fill: '#3fe0d0', opacity: 0.6 }); },
+});
+
 function prop(name, o) {
   const fn = PROPS[name];
   if (!fn) throw new Error(`unknown prop ${name}`);

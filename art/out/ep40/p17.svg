@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" overflow="hidden"><defs>
+<filter id="grayF"><feColorMatrix type="saturate" values="0.05"/></filter>
+<filter id="silF"><feFlood flood-color="#15131c" result="c"/><feComposite in="c" in2="SourceAlpha" operator="in"/></filter>
+<filter id="porcF"><feColorMatrix type="matrix" values="0.25 0.35 0.15 0 0.42  0.25 0.35 0.15 0 0.42  0.25 0.35 0.15 0 0.45  0 0 0 1 0"/></filter>
+<filter id="blurF"><feGaussianBlur stdDeviation="4"/></filter>
+</defs><clipPath id="frameClip"><rect width="800" height="800"/></clipPath><g clip-path="url(#frameClip)"><rect x="0" y="0" width="800" height="800" fill="#120406"/><rect x="270" y="360" width="260" height="80" fill="#0a0a0e" stroke="#5a5e66" stroke-width="5"/><rect x="290" y="376" width="220" height="48" fill="#3a0a10" opacity="0.8"/><defs><radialGradient id="gl0" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ff2a3a" stop-opacity="0.3"/><stop offset="1" stop-color="#ff2a3a" stop-opacity="0"/></radialGradient></defs><circle cx="400" cy="400" r="140" fill="url(#gl0)"/><rect x="2" y="2" width="796" height="796" fill="none" stroke="#0b0a10" stroke-width="4"/></g></svg>
